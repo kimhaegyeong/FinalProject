@@ -1,0 +1,11 @@
+sql 셋팅방법
+
+sql 파일 디렉토리에서
+
+> sqlplus
+> 아이디
+> 비번
+
+> @create-table.sql
+> @stores-data.sql
+> @delivery-data.sql
