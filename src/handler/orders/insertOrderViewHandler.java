@@ -13,7 +13,7 @@ import handler.CommandHandler;
 @Controller
 public class insertOrderViewHandler implements CommandHandler {
 
-	@RequestMapping("/orderViewForm")
+	@RequestMapping("/insertOrderView")
 	@Override
 	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -21,7 +21,7 @@ public class insertOrderViewHandler implements CommandHandler {
 		
 		
 	
-		return new ModelAndView("order/orderViewForm");
+		return new ModelAndView("orders/insertOrderView");
 	}
 
 }
