@@ -30,6 +30,12 @@ public class OrdersDataBean {
 	/** 전체공개 여부. */
 	private String opencheck;
 
+	/** sid */
+	private int sid;
+	
+	/** did */
+	private int did;
+
 	public Integer getOnum() {
 		return onum;
 	}
@@ -100,6 +106,22 @@ public class OrdersDataBean {
 
 	public void setOpencheck(String opencheck) {
 		this.opencheck = opencheck;
+	}
+
+	public int getSid() {
+		return sid;
+	}
+
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
+
+	public int getDid() {
+		return did;
+	}
+
+	public void setDid(int did) {
+		this.did = did;
 	}
 
 }

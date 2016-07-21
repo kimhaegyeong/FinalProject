@@ -4,5 +4,24 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="Orders">
-
+	<select id="getCount" parameterType="int" resultType="int">
+		select count(*) 
+		from qworders
+		where did=#{did}
+	</select>
+		
+	<select id="getOrders" parameterType="int" resultType="orders.OrdersDataBean">
+		select ONUM,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,RES_LIMIT_TIME,OPENCHECK,DID,SID		
+		from qworders
+		where did=#{did}
+		order by onum desc
+	</select>
+	
+	<update id="acceptOrder" parameterType="int"> 
+		update qworders set state=2 where onum=#{onum}	
+	</update>
+	
+	<update id="refuseOrder" parameterType="int"> 
+		update qworders set state=3, did=null where onum=#{onum}	
+	</update>
 </mapper> 
