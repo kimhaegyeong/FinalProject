@@ -57,7 +57,7 @@ CREATE TABLE qworders
 	price number NOT NULL,
 	state varchar2(20) NOT NULL,
 	reg_time date NOT NULL,
-	dprice number(4,0) NOT NULL,
+	dprice number(4,0),
 	fees number(5,0) NOT NULL,
 	limit_time date NOT NULL,
 	res_limit_time date,
@@ -146,7 +146,7 @@ ALTER TABLE qwqna
 	REFERENCES qwstores (sid)
 ;
 
-/* ½ÃÄö½º »èÁ¦ */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 drop sequence qna_seq;
 drop sequence admin_seq;
 drop sequence bike_seq;
@@ -155,7 +155,7 @@ drop sequence delivery_seq;
 drop sequence stores_seq;
 
 
-/* ½ÃÄö½º »ý¼º */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 CREATE SEQUENCE qna_seq
            INCREMENT BY 1
            START WITH   1
