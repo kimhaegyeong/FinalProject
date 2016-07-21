@@ -3,7 +3,7 @@
 
 <body>
 	<div>
-		<jsp:include page="/registration/top.jsp"></jsp:include>
+		<jsp:include page="/default/top.jsp"></jsp:include>
 	</div>
 	
 	<h2>stores 메인페이지입니다.</h2>
