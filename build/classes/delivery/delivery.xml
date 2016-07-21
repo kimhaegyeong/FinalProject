@@ -5,9 +5,12 @@
 
 <mapper namespace="Delivery">
 	<select id="getCount" parameterType="String" resultType="int">
-		select count(*) from dbtest where id=#{id}
+		select count(*) from qwdelivery where email=#{id}
 	</select>
 	<select id="getPasswd" parameterType="String" resultType="String">
-		select passwd from dbtest where id=#{id}
+		select passwd from qwdelivery where email=#{email}
+	</select>
+	<select id="getId" parameterType="String" resultType="int">
+		select did from qwdelivery where email=#{email}
 	</select>
 </mapper>

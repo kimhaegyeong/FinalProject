@@ -4,5 +4,13 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="Stores">
-
+	<select id="getCount" parameterType="String" resultType="int">
+		select count(*) from qwstores where email=#{id}
+	</select>
+	<select id="getPasswd" parameterType="String" resultType="String">
+		select passwd from qwstores where email=#{email}
+	</select>
+	<select id="getId" parameterType="String" resultType="int">
+		select sid from qwstores where email=#{email}
+	</select>
 </mapper> 

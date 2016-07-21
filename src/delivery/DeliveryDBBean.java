@@ -4,9 +4,9 @@ import mybatis.SqlMapClient;
 
 public class DeliveryDBBean implements DeliveryDao {
 	 
-	public int loginCheck(String id, String passwd){
+	public int loginCheck(String email, String passwd){
 		int result = 0;
-		String anspw = SqlMapClient.getSession().selectOne("Delivery.getPasswd", id);
+		String anspw = SqlMapClient.getSession().selectOne("Delivery.getPasswd", email);
 		if(passwd.equals(anspw)){
 			//비밀번호가 같다
 			result = 1;
@@ -28,5 +28,10 @@ public class DeliveryDBBean implements DeliveryDao {
 			result = 0;
 		}
 		return result;
+	}
+	public int getId(String email){
+		int id = SqlMapClient.getSession().selectOne("Delivery.getId",email);
+
+		return id;
 	}
 }
