@@ -14,7 +14,7 @@ public class StoresDataBean {
 	private String shopName; 
 
 	/** 사업주. */
-	private String onner;
+	private String owner;
 
 	/** 우편번호. */
 	private Short post;
@@ -78,12 +78,12 @@ public class StoresDataBean {
 		this.shopName = shopName;
 	}
 
-	public String getOnner() {
-		return onner;
+	public String getowner() {
+		return owner;
 	}
 
-	public void setOnner(String onner) {
-		this.onner = onner;
+	public void setowner(String owner) {
+		this.owner = owner;
 	}
 
 	public Short getPost() {

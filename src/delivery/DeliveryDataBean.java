@@ -14,7 +14,7 @@ public class DeliveryDataBean {
 	private String shopName;
 
 	/** 사업주. */
-	private String onner;
+	private String owner;
 
 	/** 우편번호. */
 	private Short post;
@@ -41,7 +41,7 @@ public class DeliveryDataBean {
 	private Double lng;
 
 	/** 배달비용. */
-	private Byte dprice;
+	private Integer dprice;
 
 	/** 실사용가능오토바이. */
 	private Integer bike;
@@ -81,12 +81,12 @@ public class DeliveryDataBean {
 		this.shopName = shopName;
 	}
 
-	public String getOnner() {
-		return onner;
+	public String getowner() {
+		return owner;
 	}
 
-	public void setOnner(String onner) {
-		this.onner = onner;
+	public void setowner(String owner) {
+		this.owner = owner;
 	}
 
 	public Short getPost() {
@@ -153,11 +153,11 @@ public class DeliveryDataBean {
 		this.lng = lng;
 	}
 
-	public Byte getDprice() {
+	public Integer getDprice() {
 		return dprice;
 	}
 
-	public void setDprice(Byte dprice) {
+	public void setDprice(Integer dprice) {
 		this.dprice = dprice;
 	}
 
