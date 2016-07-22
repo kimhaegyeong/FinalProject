@@ -1,4 +1,4 @@
-﻿sid,email,passwd,shop_name,onner,post,address,tel,phone,intro,shop_num,lat,lng,max_price,imgpath
+﻿sid,email,passwd,shop_name,owner,post,address,tel,phone,intro,shop_num,lat,lng,max_price,imgpath
 1,czsg9307@naver.com,1111,차이나1998현경본점,제갈민정,6134,서울특별시 강남구 역삼동 821-1,02-2039-0057,010-2039-0057,"안녕하세요, 반갑습니다.",2144663564,37.49861161,127.0280548,4000,
 2,gyck5411@naver.com,1111,한솥도시락역삼세무서점,마세종,6244,서울특별시 강남구 역삼1동 751-14,02-538-3011,010-538-3011,"안녕하세요, 반갑습니다.",2145456752,37.49473181,127.0350327,4000,
 3,huzw0088@naver.com,1111,피자썸,도지희,6201,서울특별시 강남구 대치동 911,02-555-4007,010-555-4007,"안녕하세요, 반갑습니다.",2142570228,37.50182754,127.0554243,4000,
