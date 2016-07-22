@@ -35,5 +35,11 @@ public class StoresDBBean implements StoresDao {
 		return id;
 	}
 
+	@Override
+	public StoresDataBean getMember(int id) {
+		return SqlMapClient.getSession().selectOne("Stores.getMember", id);
+	}
+
+
 }
  

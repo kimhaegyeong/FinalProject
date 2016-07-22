@@ -30,9 +30,6 @@ public class InRangeDeliveryHandler implements CommandHandler {
 		double neLat = Double.parseDouble(request.getParameter("neLat"));
 		double neLng = Double.parseDouble(request.getParameter("neLnt"));
 		
-		// System.out.println(swLat + " | " + swLng);
-		// System.out.println(neLat + " | " + neLng);
-		
 		Map<String, Double> map = new HashMap<String, Double> (); 
 		map.put("swLat", swLat);
 		map.put("swLng", swLng);
@@ -40,17 +37,9 @@ public class InRangeDeliveryHandler implements CommandHandler {
 		map.put("neLng", neLng);
 		
 		List<DeliveryDataBean> deliveryList = deliveryDao.getInRangeMember(map);
+		request.setAttribute("deliveryList", deliveryList);
 		
-		/*
-		System.out.println("deliveryList.size : " + deliveryList.size() );
-		if (deliveryList != null || deliveryList.size() != 0) {
-			for (DeliveryDataBean item : deliveryList) {
-				System.out.println(item.getEmail());
-			}
-		}
-		*/
-		
-		return new ModelAndView("orders/inRangeDelivery.js");
+		return new ModelAndView("orders/inRangeDelivery");
 	}
 
 }

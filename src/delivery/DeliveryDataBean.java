@@ -11,7 +11,7 @@ public class DeliveryDataBean {
 	private String passwd;
 
 	/** 가게명. */
-	private String shopName;
+	private String shop_name;
 
 	/** 사업주. */
 	private String owner;
@@ -32,7 +32,7 @@ public class DeliveryDataBean {
 	private String intro;
 
 	/** 사업자번호. */
-	private Integer shopNum;
+	private Double shop_num;
 
 	/** 위도. */
 	private Double lat;
@@ -71,22 +71,6 @@ public class DeliveryDataBean {
 
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
-	}
-
-	public String getShopName() {
-		return shopName;
-	}
-
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-
-	public String getowner() {
-		return owner;
-	}
-
-	public void setowner(String owner) {
-		this.owner = owner;
 	}
 
 	public Short getPost() {
@@ -129,14 +113,6 @@ public class DeliveryDataBean {
 		this.intro = intro;
 	}
 
-	public Integer getShopNum() {
-		return shopNum;
-	}
-
-	public void setShopNum(Integer shopNum) {
-		this.shopNum = shopNum;
-	}
-
 	public Double getLat() {
 		return lat;
 	}
@@ -177,5 +153,27 @@ public class DeliveryDataBean {
 		this.imgpath = imgpath;
 	}
 
-	
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getShop_name() {
+		return shop_name;
+	}
+
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
+	}
+
+	public Double getShop_num() {
+		return shop_num;
+	}
+
+	public void setShop_num(Double shop_num) {
+		this.shop_num = shop_num;
+	}
 }

@@ -13,4 +13,7 @@
 	<select id="getId" parameterType="String" resultType="int">
 		select sid from qwstores where email=#{email}
 	</select>
+	<select id="getMember" parameterType="int" resultType="stores.StoresDataBean">
+		select * from qwstores where sid=#{id}
+	</select>
 </mapper> 

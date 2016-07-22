@@ -13,4 +13,11 @@
 	<select id="getId" parameterType="String" resultType="int">
 		select did from qwdelivery where email=#{email}
 	</select>
+	<select id="getInRangeMember" parameterType="Map" resultType="delivery.DeliveryDataBean">
+		select * from qwdelivery 
+		where lat &gt;= #{swLat} 
+		and lng &gt;= #{swLng}
+		and lat &lt;= #{neLat} 
+		and lng &lt;= #{neLng}
+	</select>
 </mapper>

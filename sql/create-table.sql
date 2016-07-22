@@ -57,7 +57,7 @@ CREATE TABLE qworders
 	price number NOT NULL,
 	state varchar2(20) NOT NULL,
 	reg_time date NOT NULL,
-	dprice number(4,0),
+	dprice number(4,0) NOT NULL,
 	fees number(5,0) NOT NULL,
 	limit_time date NOT NULL,
 	res_limit_time date,

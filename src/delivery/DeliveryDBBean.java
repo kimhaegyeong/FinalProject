@@ -1,5 +1,8 @@
 package delivery;
 
+import java.util.List;
+import java.util.Map;
+
 import mybatis.SqlMapClient;
 
 public class DeliveryDBBean implements DeliveryDao {
@@ -30,8 +33,13 @@ public class DeliveryDBBean implements DeliveryDao {
 		return result;
 	}
 	public int getId(String email){
-		int id = SqlMapClient.getSession().selectOne("Delivery.getId",email);
+		int id = SqlMapClient.getSession().selectOne("Delivery.getId", email);
 
 		return id;
+	}
+
+	@Override
+	public List<DeliveryDataBean> getInRangeMember(Map<String, Double> map) {
+		return SqlMapClient.getSession().selectList("Delivery.getInRangeMember", map);
 	}
 }

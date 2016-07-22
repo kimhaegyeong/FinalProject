@@ -1,5 +1,6 @@
 package handler.orders;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,19 +10,23 @@ import org.springframework.web.context.request.SessionScope;
 import org.springframework.web.servlet.ModelAndView;
 
 import handler.CommandHandler;
+import stores.StoresDao;
+import stores.StoresDataBean;
  
 @Controller
 public class insertOrderViewHandler implements CommandHandler {
-
+	@Resource(name="storesDao")
+	private StoresDao storesDao;
+	
 	@RequestMapping("/insertOrderView")
 	@Override
 	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		String sid = (String) request.getSession().getAttribute( "sid" );
-		
-		
+		int id = (int)request.getSession().getAttribute("id");
+		StoresDataBean dto = storesDao.getMember(id);
+		request.setAttribute("lat", dto.getLat());
+		request.setAttribute("lng", dto.getLng());
 	
 		return new ModelAndView("orders/insertOrderView");
 	}
-
 }
