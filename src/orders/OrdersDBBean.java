@@ -1,5 +1,6 @@
 package orders;
 
+import java.util.HashMap;
 import java.util.List;
 
 import mybatis.SqlMapClient;
@@ -24,6 +25,11 @@ public class OrdersDBBean implements OrdersDao {
 	// 주문거절 
 	public int refuseOrder(int onum) {
 		return SqlMapClient.getSession().update("Orders.refuseOrder", onum);
+	}
+
+	@Override
+	public int insertOrder(HashMap<String, Object> map) {
+		return SqlMapClient.getSession().update("Orders.insertOrder", map);
 	}
 }
  
