@@ -24,4 +24,37 @@
 	<update id="refuseOrder" parameterType="int"> 
 		update qworders set state=3, did=null where onum=#{onum}	
 	</update>
+	
+	<insert id="insertOrder" parameterType="map">
+		insert into qworders values(
+			orders_seq.nextval, #{price}, '1', sysdate, #{dprice}, #{fees},
+			<choose>
+				<when test="limit_time == 30">	
+					sysdate + 1/48
+				</when>
+				<when test="limit_time == 40">	
+					sysdate + 40/1440
+				</when>
+				<when test="limit_time == 50">	
+					sysdate + 50/1440
+				</when>
+				<when test="limit_time == 60">	
+					sysdate + 1/24
+				</when>
+				<otherwise>
+			      	sysdate
+			    </otherwise>
+			</choose>
+			, 
+			<choose>
+				<when test='res_limit_time == "y"'>	
+					sysdate + 10/1440	
+				</when>
+				<otherwise>
+					sysdate
+				</otherwise>
+			</choose>
+			, #{opencheck}, #{did}, #{sid}			
+		)
+	</insert>
 </mapper> 

@@ -102,27 +102,27 @@
 					</tr>
 					<tr>
 						<th>가게명<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="stoShopName" value="${stoShopName}" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>주소<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="stoAdd" value="${stoAdd}" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>상품가격<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="stoPrice"></td>
 					</tr>
 					<tr>
 						<th>수수료<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="fees" value="${fees}" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<th>도착제한시간<th>
 						<td>
-							<input type="radio" name="res_limit_time" value="30" checked="checked">30분
-							<input type="radio" name="res_limit_time" value="40">40분
-							<input type="radio" name="res_limit_time" value="50">50분
-							<input type="radio" name="res_limit_time" value="60">60분
+							<input type="radio" name="limit_time" value="30" checked="checked">30분
+							<input type="radio" name="limit_time" value="40">40분
+							<input type="radio" name="limit_time" value="50">50분
+							<input type="radio" name="limit_time" value="60">60분
 						</td>
 					</tr>
 					<tr>
@@ -140,31 +140,35 @@
 						</td>
 					</tr>
 					<tr colspan="2">
-						<td><p style="color:magenta">배달업체 정보</p></td>
+						<td>
+							<p style="color:magenta">배달업체 정보</p>
+							<input type="hidden" name="did">
+						</td>
 					</tr>
 					<tr>
 						<th>가게명<th>
-						<td><input type="text" name="delShopname"></td>
-					</tr>
-					<tr>
-						<th>우편번호<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="delShopname" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>주소<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="delAddress" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>전화번호<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="delTel" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>핸드폰번호<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="delPhone" disabled="disabled"></td>
 					</tr>
 					<tr>
 						<th>배달비<th>
-						<td><input type="text" name="delShopname"></td>
+						<td><input type="text" name="delDPrice" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="submit" value="주문 신청" > 
+						</td>
 					</tr>					
 				</table>
 			</form>
@@ -277,7 +281,7 @@
 		for (var i in deliveryList) {
 			// console.log(deliveryList[i]);
 			$("#del-list-tb").append(
-				"<tr>"
+				"<tr id='del-" + i + "'>"
 				+	"<td><img style='width: 30px' src='" 
 					+ (deliveryList[i].imgpath == ""? "/FinalProject/images/order/scooter.png" : deliveryList[i].imgpath)
 					+ "'></td>"
@@ -286,12 +290,33 @@
 				+	"<td>" + deliveryList[i].tel + "</td>"
 				+	"<td>" + deliveryList[i].phone+ "</td>"
 				+	"<td>" + deliveryList[i].dprice+ "</td>"
-				+ 	"<td><input type='button' value='선택'></td>"
+				+ 	"<td><input id='btn-del-" + i +"' class='btn-dels' type='button' value='선택'></td>"
 				+ "</tr>"
 			);
 			
 			makeMarker(deliveryList[i]);
 		}
+		
+		// 모든 .btn-dels가 생성된 뒤에 클릭이벤트를 설정
+		$(".btn-dels").on("click", function() {
+			// console.log($(this).attr("id"));
+			var num = $(this).attr("id").split("-")[2];
+			$("input[name='did']").val(deliveryList[num].did);
+			$("input[name='delShopname']").val(deliveryList[num].shopName);
+			$("input[name='delAddress']").val(deliveryList[num].address);
+			$("input[name='delTel']").val(deliveryList[num].tel);
+			$("input[name='delPhone']").val(deliveryList[num].phone);
+			$("input[name='delDPrice']").val(deliveryList[num].dprice);
+			
+			// 업체선택시 전체공개 아님
+			$("input[name='opencheck']").each(function() {
+				if ($(this).attr("checked") == true) {
+					$(this).attr("checked", false);
+				} else {
+					$(this).attr("checked", true);
+				}
+			}); 
+		});
 	}
 	
 	 function makeMarker(deliveryInfo) {
@@ -372,4 +397,6 @@
                  });
              }
          }
+	 
+
 </script>
