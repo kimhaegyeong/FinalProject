@@ -54,6 +54,7 @@ CREATE TABLE qwdelivery
 CREATE TABLE qworders
 (
 	onum number NOT NULL,
+	destination varchar(200) NOT NULL,
 	price number NOT NULL,
 	state varchar2(20) NOT NULL,
 	reg_time date NOT NULL,
@@ -172,7 +173,7 @@ CREATE SEQUENCE bike_seq
            
 CREATE SEQUENCE orders_seq
            INCREMENT BY 1
-           START WITH   1
+           START WITH   10
            MAXVALUE 999999
            NOCYCLE
            NOCACHE;
