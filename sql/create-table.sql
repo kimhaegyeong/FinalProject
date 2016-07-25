@@ -163,13 +163,6 @@ CREATE SEQUENCE qna_seq
            NOCYCLE
            NOCACHE;
            
-CREATE SEQUENCE admin_seq
-           INCREMENT BY 1
-           START WITH   1
-           MAXVALUE 999999
-           NOCYCLE
-           NOCACHE;
-
 CREATE SEQUENCE bike_seq
            INCREMENT BY 1
            START WITH   1
