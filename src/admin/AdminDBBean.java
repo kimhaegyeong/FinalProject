@@ -15,5 +15,9 @@ public class AdminDBBean implements AdminDao{
 		}
 		return result;
 	}
+	
+	public int getFees() {
+		return SqlMapClient.getSession().selectOne("Admin.getFees");
+	}
 }
  

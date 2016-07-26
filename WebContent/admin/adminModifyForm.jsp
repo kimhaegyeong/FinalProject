@@ -3,10 +3,10 @@
 
 <body>
 	<div>
-		<jsp:include page="/registration/top.jsp"></jsp:include>
+		<jsp:include page="/default/top.jsp"></jsp:include>
 	</div>
 	
-	<h2>관리자 수정 페이지입니다.</h2>
+	<h2>관리자 수정 페이지입니다S.</h2>
 	<div>
 	<table>
 		<tr>
