@@ -29,19 +29,28 @@ public class InsertOrderHandler implements CommandHandler {
 	@RequestMapping("/insertOrder")
 	@Override
 	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int result = 0;
 		request.setCharacterEncoding("utf-8");
 		
 		HashMap<String, Object> map = new HashMap<String, Object> ();
+		map.put("sid", request.getSession().getAttribute("id"));
+		map.put("destination", request.getParameter("destination"));
 		map.put("fees", Integer.parseInt(request.getParameter("fees")));
 		map.put("price", Integer.parseInt(request.getParameter("stoPrice")));
-		map.put("dprice", Integer.parseInt(request.getParameter("delDPrice")));
 		map.put("limit_time", Integer.parseInt(request.getParameter("limit_time")));
 		map.put("res_limit_time", request.getParameter("res_limit_time"));
-		map.put("opencheck", request.getParameter("opencheck"));
-		map.put("sid", request.getSession().getAttribute("id"));
-		map.put("did", Integer.parseInt(request.getParameter("did")));
-			
-		int result = ordersDao.insertOrder(map);
+		
+		String opencheck = request.getParameter("opencheck");
+		map.put("opencheck", opencheck);
+		
+		if (!opencheck.equals("")  && opencheck.equals("n")) {
+			map.put("dprice", Integer.parseInt(request.getParameter("delDPrice")));
+			map.put("did", Integer.parseInt(request.getParameter("did")));
+			result = ordersDao.insertOrderOne(map);
+		} else {
+			result = ordersDao.insertOrderAll(map);
+		}
+		
 		request.setAttribute("result", result);
 		
 		return new ModelAndView("orders/insertOrder");

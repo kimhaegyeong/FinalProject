@@ -28,8 +28,13 @@ public class OrdersDBBean implements OrdersDao {
 	}
 
 	@Override
-	public int insertOrder(HashMap<String, Object> map) {
-		return SqlMapClient.getSession().update("Orders.insertOrder", map);
+	public int insertOrderOne(HashMap<String, Object> map) {
+		return SqlMapClient.getSession().update("Orders.insertOrderOne", map);
+	}
+
+	@Override
+	public int insertOrderAll(HashMap<String, Object> map) {
+		return SqlMapClient.getSession().update("Orders.insertOrderAll", map);
 	}
 }
  

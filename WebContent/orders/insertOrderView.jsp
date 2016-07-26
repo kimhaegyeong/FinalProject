@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<link rel="stylesheet" href="/FinalProject/css/remodal.css">
+<link rel="stylesheet" href="/FinalProject/css/remodal-default-theme.css">
 <style>
 	html, body {
 		width: 100% !important;
@@ -95,7 +96,7 @@
 	<div id="right-side">
 		<div id="input-order">
 			<span>주문서 작성</span>
-			<form method="post" action="insertOrder.do">
+			<form name="orderForm">
 				<table>
 					<tr colspan="2">
 						<td><p style="color:magenta">주문자 정보</p></td>
@@ -107,6 +108,10 @@
 					<tr>
 						<th>주소<th>
 						<td><input type="text" name="stoAdd" value="${stoAdd}" disabled="disabled"></td>
+					</tr>
+					<tr>
+						<th>목적지 주소<th>
+						<td><input type="text" name="destination"></td>
 					</tr>
 					<tr>
 						<th>상품가격<th>
@@ -136,7 +141,7 @@
 						<th>전체공개<th>
 						<td>
 							<input type="radio" name="opencheck" value="y" checked="checked">예
-							<input type="radio" name="opencheck" value="n">아니오
+							<input type="radio" name="opencheck" value="n" disabled="true">아니오
 						</td>
 					</tr>
 					<tr colspan="2">
@@ -167,7 +172,7 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input type="submit" value="주문 신청" > 
+							<input id="btnOrder" type="button" value="주문 신청"> 
 						</td>
 					</tr>					
 				</table>
@@ -180,13 +185,29 @@
 	</div>
 </div>
 
+<!-- 모달 - 주문신청 후 -->
+<div class="remodal" data-remodal-id="modal">
+  <button data-remodal-action="close" class="remodal-close"></button>
+  <h1></h1>
+  <p></p>
+  <br>
+  <button data-remodal-action="cancel" class="remodal-cancel">주문 현황보기</button>
+  <button data-remodal-action="confirm" class="remodal-confirm">주문 계속하기</button>
+</div>
+
 <!-- ajax -->
 <script type="text/javascript" src="/FinalProject/js/request.js"></script>
 
 <!-- 다음 지도 api -->
 <script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=4887e63e564542f5f9f7086d2c988895"></script>
 
+<!-- 모달 사용 -->
+<script type="text/javascript" src="/FinalProject/js/remodal.min.js"></script>
+
 <script>
+	// 모달 초기화
+	var inst = $('[data-remodal-id=modal]').remodal();
+
 	var toggleCnt = null;
 	
 	$(document).ready(function(){
@@ -208,6 +229,50 @@
 			$("#container").addClass("extend");
 		}
 	});
+	
+	$("#btnOrder").on("click", function() {
+		var params = "stoPrice=" + orderForm.stoPrice.value
+			+ "&destination=" + orderForm.destination.value
+			+ "&fees=" + orderForm.fees.value
+			+ "&limit_time=" + orderForm.limit_time.value
+			+ "&res_limit_time=" + orderForm.res_limit_time.value
+			+ "&opencheck=" + orderForm.opencheck.value
+			+ "&did=" + orderForm.did.value
+			+ "&delDPrice=" + orderForm.delDPrice.value;
+
+		sendRequest( orderResult, "insertOrder.do", "POST", params );
+	});
+	
+	$("input[name='opencheck']").on("click", function() {
+		if ($("input[name='opencheck']:checked").val() == "y") {
+			$("input[name='delShopname']").val("");
+			$("input[name='delAddress']").val("");
+			$("input[name='delTel']").val("");
+			$("input[name='delPhone']").val("");
+			$("input[name='delDPrice']").val("");
+		}
+	});
+	
+	function orderResult() {
+		if( httpRequest.readyState == 4 ) {
+			if( httpRequest.status == 200 ) {
+				console.log(httpRequest.responseText);
+				var res = eval( "(" + httpRequest.responseText + ")" ); 
+				$('[data-remodal-id=modal] > h1').text(res.result.data[0]);
+				$('[data-remodal-id=modal] > p').text(res.result.data[1]);
+				inst.open();
+				if (res.result.code == "fail") {
+				}
+				else if (res.result.code == "success") {
+					
+				}
+			} else {
+				console.log("에러 발생");
+			}		
+		} else {
+			console.log("통신중");	
+		}
+	}
 	
 	var map;                    // 지도그릴 공간
     var mapLevel = 3;              // 맵의 레벨
@@ -237,7 +302,6 @@
     }
     
 	function fromServer() {
-		var result = document.getElementById( "result" );
 		if( httpRequest.readyState == 4 ) {
 			if( httpRequest.status == 200 ) {
 				// console.log(httpRequest.responseText);
@@ -310,7 +374,7 @@
 			
 			// 업체선택시 전체공개 아님
 			$("input[name='opencheck']").each(function() {
-				if ($(this).attr("checked") == true) {
+				if ($(this).val() == "y") {
 					$(this).attr("checked", false);
 				} else {
 					$(this).attr("checked", true);

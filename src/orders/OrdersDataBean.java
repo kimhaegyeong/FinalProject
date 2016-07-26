@@ -5,6 +5,9 @@ import java.sql.Date;
 public class OrdersDataBean {
 	/** 주문번호. */
 	private Integer onum;
+	
+	// 목적지
+	private String destination;
 
 	/** 상품가격. */
 	private Integer price;
@@ -124,4 +127,11 @@ public class OrdersDataBean {
 		this.did = did;
 	}
 
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
 }
