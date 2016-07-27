@@ -5,7 +5,9 @@ public class BikeDataBean {
 	private String id;
 
 	/** 보험. */
-	private Integer ins;
+	private int ins;
+	
+	private int did;
 
 	public String getId() {
 		return id;
@@ -15,13 +17,22 @@ public class BikeDataBean {
 		this.id = id;
 	}
 
-	public Integer getIns() {
+
+	public int getDid() {
+		return did;
+	}
+
+	public void setDid(int did) {
+		this.did = did;
+	}
+
+	public int getIns() {
 		return ins;
 	}
 
-	public void setIns(Integer ins) {
+	public void setIns(int ins) {
 		this.ins = ins;
 	}
-	
+
 	
 }

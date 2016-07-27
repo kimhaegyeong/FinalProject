@@ -35,6 +35,7 @@
 <c:if test="${check==3}">
 	<c:if test="${result==1}">
 		${sessionScope.check = check}
+		${sessionScope.id = email}
 		<c:redirect url="adminOrderView.do"/>
 	</c:if>
 	<c:if test="${result==0}">

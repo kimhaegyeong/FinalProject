@@ -14,10 +14,15 @@ public class AdminDBBean implements AdminDao{
 			result = 0;
 		}
 		return result;
-	}
-	
+	}	
 	public int getFees() {
 		return SqlMapClient.getSession().selectOne("Admin.getFees");
+	}
+	public AdminDataBean getAdmin(String id){
+		return SqlMapClient.getSession().selectOne("Admin.getAdmin", id);
+	}
+	public int updateAdmin(AdminDataBean dto){
+		return SqlMapClient.getSession().update("Admin.updateAdmin", dto);
 	}
 }
  

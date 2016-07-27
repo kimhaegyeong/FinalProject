@@ -56,6 +56,7 @@ public class LoginHandler implements CommandHandler {
 		request.setAttribute("check", check);
 		request.setAttribute("id", id);
 		request.setAttribute("result", result);
+		request.setAttribute("email", email);
 		
 		return new ModelAndView("/registration/login");
 	}

@@ -5,10 +5,10 @@ import java.sql.Date;
 public class OrdersDataBean {
 	/** 주문번호. */
 	private Integer onum;
-	
-	// 목적지
-	private String destination;
 
+	/** 목적지. */
+	private String destination;
+	
 	/** 상품가격. */
 	private Integer price;
 
@@ -16,7 +16,7 @@ public class OrdersDataBean {
 	private String state;
 
 	/** 등록시간. */
-	private Date regTime;
+	private Date reg_Time;
 
 	/** 배달비용. */ 
 	private Integer dprice;
@@ -25,16 +25,16 @@ public class OrdersDataBean {
 	private Short fees;
 
 	/** 도착제한시간. */
-	private Date limitTime;
+	private Date limit_Time;
 
 	/** 응답제한시간. */
-	private Date resLimitTime;
+	private Date res_Limit_Time;
 
 	/** 전체공개 여부. */
 	private String opencheck;
 
 	/** sid */
-	private int sid;
+	private String sid;
 	
 	/** did */
 	private int did;
@@ -63,13 +63,6 @@ public class OrdersDataBean {
 		this.state = state;
 	}
 
-	public Date getRegTime() {
-		return regTime;
-	}
-
-	public void setRegTime(Date regTime) {
-		this.regTime = regTime;
-	}
 
 	public Integer getDprice() {
 		return dprice;
@@ -85,23 +78,7 @@ public class OrdersDataBean {
 
 	public void setFees(Short fees) {
 		this.fees = fees;
-	}
-
-	public Date getLimitTime() {
-		return limitTime;
-	}
-
-	public void setLimitTime(Date limitTime) {
-		this.limitTime = limitTime;
-	}
-
-	public Date getResLimitTime() {
-		return resLimitTime;
-	}
-
-	public void setResLimitTime(Date resLimitTime) {
-		this.resLimitTime = resLimitTime;
-	}
+	}	
 
 	public String getOpencheck() {
 		return opencheck;
@@ -111,11 +88,11 @@ public class OrdersDataBean {
 		this.opencheck = opencheck;
 	}
 
-	public int getSid() {
+	public String getSid() {
 		return sid;
 	}
 
-	public void setSid(int sid) {
+	public void setSid(String sid) {
 		this.sid = sid;
 	}
 
@@ -126,12 +103,36 @@ public class OrdersDataBean {
 	public void setDid(int did) {
 		this.did = did;
 	}
-
+	
 	public String getDestination() {
 		return destination;
 	}
 
 	public void setDestination(String destination) {
 		this.destination = destination;
+	}
+
+	public Date getLimit_Time() {
+		return limit_Time;
+	}
+
+	public void setLimit_Time(Date limit_Time) {
+		this.limit_Time = limit_Time;
+	}
+
+	public Date getRes_Limit_Time() {
+		return res_Limit_Time;
+	}
+
+	public void setRes_Limit_Time(Date res_Limit_Time) {
+		this.res_Limit_Time = res_Limit_Time;
+	}
+
+	public Date getReg_Time() {
+		return reg_Time;
+	}
+
+	public void setReg_Time(Date reg_Time) {
+		this.reg_Time = reg_Time;
 	}
 }

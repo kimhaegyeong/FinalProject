@@ -4,40 +4,76 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="Orders">
-	<select id="getCount" parameterType="int" resultType="int">
+	<!-- 배달신청 -->
+	<select resultType="int" parameterType="String" id="getCount"> 
 		select count(*) 
-		from qworders
-		where did=#{did}
+		from qworders 
+		where did=#{id} and state=1 
 	</select>
-		
-	<select id="getOrders" parameterType="int" resultType="orders.OrdersDataBean">
-		select ONUM,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,RES_LIMIT_TIME,OPENCHECK,DID,SID		
-		from qworders
-		where did=#{did}
-		order by onum desc
+	<select resultType="int" id="getAllCount">	
+		select count(*) 
+		from qworders 
+		where did is null 
 	</select>
-	
-	<update id="acceptOrder" parameterType="int"> 
-		update qworders set state=2 where onum=#{onum}	
+	<select resultType="orders.OrdersDataBean" parameterType="String" id="getOrders"> 
+		select ONUM,DESTINATION,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+		from qworders o, qwstores s 
+		where s.sid = o.sid and o.did=#{id} and state=1 order by onum desc 
+	</select>
+	<select resultType="orders.OrdersDataBean" id="getAllOrders"> 
+		select ONUM,DESTINATION,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+		from qworders o, qwstores s 
+		where s.sid = o.sid and o.did is null and state=1 
+		order by onum desc 
+	</select>
+	<update parameterType="Map" id="acceptOrder"> 
+		update qworders set state=2, dprice=(select dprice from qwdelivery where did=#{id}), did=#{id} 
+		where onum=#{onum} 
+	</update>
+	<update parameterType="Map" id="refuseOrder"> 
+		update qworders set state=3, dprice=0, did=#{id} 
+		where onum=#{onum} 
 	</update>
 	
-	<update id="refuseOrder" parameterType="int"> 
-		update qworders set state=3, did=null where onum=#{onum}	
+	<!-- 배달현황 -->
+	<select resultType="int" parameterType="String" id="getStateCount"> 
+		select count(*) 
+		from qworders 
+		where did=#{id} and state in(2,3,4,5)
+	</select>
+	<select resultType="orders.OrdersDataBean" parameterType="String" id="getResOrders"> 
+		select ONUM,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+		from qworders o, qwstores s where s.sid = o.sid and did=#{id} and state in(2,3,4,5) 
+		order by onum desc, state
+	</select>
+	<update parameterType="int" id="changeState"> 
+		update qworders set state=5 
+		where onum=#{onum} 
 	</update>
+	<update parameterType="int" id="deleteState"> 
+		update qworders set state=6 
+		where onum=#{onum} 
+	</update>
+	
+	
 	
 	<insert id="insertOrderOne" parameterType="map">
 		insert into qworders values(
 			orders_seq.nextval, #{destination}, #{price}, '1', sysdate, #{dprice}, #{fees},
 			<choose>
+				<!-- 30분 -->
 				<when test="limit_time == 30">	
 					sysdate + 1/48
 				</when>
+				<!-- 40분 -->
 				<when test="limit_time == 40">	
 					sysdate + 40/1440
 				</when>
+				<!-- 50분 -->
 				<when test="limit_time == 50">	
 					sysdate + 50/1440
 				</when>
+				<!-- 60분 -->
 				<when test="limit_time == 60">	
 					sysdate + 1/24
 				</when>
@@ -47,8 +83,9 @@
 			</choose>
 			, 
 			<choose>
+				<!-- 10분 -->
 				<when test='res_limit_time == "y"'>	
-					sysdate + 10/1440	
+					sysdate + 10/1440
 				</when>
 				<otherwise>
 					sysdate
@@ -91,4 +128,12 @@
 			, #{opencheck}, #{sid}			
 		)
 	</insert>
+	
+	<!-- 관리자 -->
+	<select id="adminGetOrders" resultType="orders.OrdersDataBean">
+		select * from qworders where state!=4 and state!=5 and state!=6
+	</select>
+	<update id="updateCurrent" parameterType="int">
+		update qworders set state=4 where onum=#{onum}
+	</update>
 </mapper> 

@@ -1,5 +1,7 @@
 package stores;
 
+import java.util.List;
+
 import mybatis.SqlMapClient;
 
 public class StoresDBBean implements StoresDao {
@@ -39,7 +41,9 @@ public class StoresDBBean implements StoresDao {
 	public StoresDataBean getMember(int id) {
 		return SqlMapClient.getSession().selectOne("Stores.getMember", id);
 	}
-
-
+	
+	public List<StoresDataBean> adminFindOwner(String finder){
+		return SqlMapClient.getSession().selectList("Stores.adminFindOwner", finder);
+	}
 }
  

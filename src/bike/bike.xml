@@ -4,5 +4,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="Bike">
-
+	<select id="bikeList" parameterType="int" resultType="bike.BikeDataBean">
+		select * from qwbike where did=#{id}
+	</select>
+	<insert id="insertBike" parameterType="bike.BikeDataBean">
+		insert into qwbike values(#{id},#{ins},#{did}) 
+	</insert>
 </mapper> 

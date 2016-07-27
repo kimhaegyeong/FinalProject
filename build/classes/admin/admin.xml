@@ -10,4 +10,10 @@
 	<select id="getFees" resultType="int">
 		select fees from qwadmin
 	</select>
+	<select id="getAdmin" parameterType="String" resultType="admin.AdminDataBean">
+		select * from qwAdmin where id=#{id}
+	</select>
+	<update id="updateAdmin" parameterType="admin.AdminDataBean">
+		update qwAdmin set passwd=#{passwd}, fees=#{fees} where id=#{id}
+	</update>
 </mapper> 
