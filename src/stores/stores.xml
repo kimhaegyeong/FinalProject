@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="Stores">
+	<select id="getCount" parameterType="String" resultType="int">
+		select count(*) from qwstores where email=#{id}
+	</select>
+	<select id="getPasswd" parameterType="String" resultType="String">
+		select passwd from qwstores where email=#{email}
+	</select>
+	<select id="getId" parameterType="String" resultType="int">
+		select sid from qwstores where email=#{email}
+	</select>
+	<select id="getMember" parameterType="int" resultType="stores.StoresDataBean">
+		select * from qwstores where sid=#{id}
+	</select>
+	<select id="adminFindOwner" parameterType="String" resultType="stores.StoresDataBean">
+		select * from qwstores where owner=#{finder}
+	</select>
+</mapper> 
