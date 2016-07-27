@@ -299,12 +299,11 @@ html, body {
 	        
 	        // 영역의 북동쪽 좌표를 얻어옵니다 
 	        var neLatLng = map.getBounds().getNorthEast(); 
-	        
 	        // 배달업체 정보 요청
-	       	var params = "swLat=" + swLatLng.bb
-	       		+ "&swLng=" + swLatLng.ab
-	       		+ "&neLat=" + neLatLng.bb
-	       		+ "&neLnt=" + neLatLng.ab;
+	       	var params = "swLat=" + swLatLng.cb
+	       		+ "&swLng=" + swLatLng.bb
+	       		+ "&neLat=" + neLatLng.cb
+	       		+ "&neLnt=" + neLatLng.bb;
 	       	sendRequest( ajax.fromServer, "inRangeDelivery.do", "POST", params );
 	        
 	        this.addEvent.mouseDrag();

@@ -5,7 +5,7 @@
     
 <mapper namespace="Orders">
 	<!-- 배달신청 -->
-	<select resultType="int" parameterType="String" id="getCount"> 
+	<select resultType="int" parameterType="int" id="getCount"> 
 		select count(*) 
 		from qworders 
 		where did=#{id} and state=1 
@@ -15,13 +15,14 @@
 		from qworders 
 		where did is null 
 	</select>
-	<select resultType="orders.OrdersDataBean" parameterType="String" id="getOrders"> 
-		select ONUM,DESTINATION,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+	<select resultType="HashMap" parameterType="int" id="getOrders"> 
+		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.DID did, s.sid sid,
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
 		from qworders o, qwstores s 
-		where s.sid = o.sid and o.did=#{id} and state=1 order by onum desc 
+		where s.sid = o.sid and o.did=1 and state=1 order by onum desc 
 	</select>
 	<select resultType="orders.OrdersDataBean" id="getAllOrders"> 
-		select ONUM,DESTINATION,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+		select onum, destination, price, state, reg_time, dprice, limit_time, res_Limit_Time, opencheck, o.DID did, s.shop_name shopname 
 		from qworders o, qwstores s 
 		where s.sid = o.sid and o.did is null and state=1 
 		order by onum desc 
@@ -41,8 +42,9 @@
 		from qworders 
 		where did=#{id} and state in(2,3,4,5)
 	</select>
-	<select resultType="orders.OrdersDataBean" parameterType="String" id="getResOrders"> 
-		select ONUM,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID,s.shop_name sid 
+	<select resultType="HashMap" parameterType="int" id="getResOrders"> 
+		select ONUM,PRICE,STATE,REG_TIME,DPRICE,FEES,LIMIT_TIME,res_Limit_Time,OPENCHECK,o.DID did,
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name 
 		from qworders o, qwstores s where s.sid = o.sid and did=#{id} and state in(2,3,4,5) 
 		order by onum desc, state
 	</select>

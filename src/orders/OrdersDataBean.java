@@ -34,7 +34,8 @@ public class OrdersDataBean {
 	private String opencheck;
 
 	/** sid */
-	private String sid;
+	/*private String sid;*/
+	private int sid;
 	
 	/** did */
 	private int did;
@@ -88,16 +89,24 @@ public class OrdersDataBean {
 		this.opencheck = opencheck;
 	}
 
-	public String getSid() {
+	/*public String getSid() {
 		return sid;
 	}
 
 	public void setSid(String sid) {
 		this.sid = sid;
-	}
+	}*/
 
 	public int getDid() {
 		return did;
+	}
+
+	public int getSid() {
+		return sid;
+	}
+
+	public void setSid(int sid) {
+		this.sid = sid;
 	}
 
 	public void setDid(int did) {

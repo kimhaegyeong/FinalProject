@@ -10,7 +10,7 @@ public class OrdersDBBean implements OrdersDao {
 	
 	/*	배달신청	*/ 
 	// 선택 주문개수 가져오기
-	public int getCount(String id) {		
+	public int getCount(int id) {		
 		return SqlMapClient.getSession().selectOne("Orders.getCount", id);
 	}
 	// 전체 주문개수 가져오기
@@ -19,7 +19,7 @@ public class OrdersDBBean implements OrdersDao {
 	}
 	
 	// 선택 주문목록 가져오기
-	public List<OrdersDataBean> getOrders(String id) {	
+	public List<HashMap<String, Object>> getOrders(int id) {	
 		return SqlMapClient.getSession().selectList("Orders.getOrders", id);
 	} 
 	
@@ -45,7 +45,7 @@ public class OrdersDBBean implements OrdersDao {
 	}
 	
 	// 배달현황 가져오기
-	public List<OrdersDataBean> getResOrders(String id) {	
+	public List<HashMap<String, Object>> getResOrders(int id) {	
 		return SqlMapClient.getSession().selectList("Orders.getResOrders", id);
 	} 
 	

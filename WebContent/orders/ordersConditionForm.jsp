@@ -63,26 +63,25 @@
 		
 		<c:if test="${count != 0}">		
 			<c:forEach var="dto" items="${list}">
-				<c:if test="${dto.state==2 || dto.state==5}">
+				<c:if test="${dto.STATE==2 || dto.STATE==5}">
 					<tr>
-						<td align="center">	${dto.onum} </td>
-						<td align="center"> ${dto.sid} </td>
-						<td align="center"> ${dto.price} 원 </td>
-						<td align="center"> ${dto.fees} 원 </td>
+						<td align="center">	${dto.ONUM} </td>
+						<td align="center"> ${dto.SHOP_NAME} </td>
+						<td align="center"> ${dto.PRICE} 원 </td>
+						<td align="center"> ${dto.FEES} 원 </td>
 						<td align="center">
-							<fmt:formatDate value= "${dto.reg_Time}" pattern="MM/dd HH:mm:ss"/>
+							<fmt:formatDate value= "${dto.REG_TIME}" pattern="MM/dd HH:mm:ss"/>
 						</td>					
 						<td align="center">
-							<fmt:formatDate value="${dto.limit_Time}" pattern="HH:mm:ss"/>
+							<fmt:formatDate value="${dto.LIMIT_TIME}" pattern="HH:mm:ss"/>
 						</td>
 						<td align="center">	
-							<c:if test="${dto.state==2}"> 배달 중 </c:if>
-							<c:if test="${dto.state==5}"> 배달 완료 </c:if>
+							<c:if test="${dto.STATE==5}"> 배달 완료 </c:if>
 						</td>
 						<!-- 수락한 주문인 경우 완료변경버튼 -->
-						<c:if test="${dto.state == 2}">
+						<c:if test="${dto.STATE == 2}">
 							<th>
-								<input type="button" value="완료" onclick="finsh(${dto.onum})">		
+								<input type="button" value="완료" onclick="finsh(${dto.ONUM})">		
 							</th>	
 						</c:if>					
 					</tr>	

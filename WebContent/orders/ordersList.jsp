@@ -18,14 +18,15 @@
 			data : [
 				<c:forEach var="item" items="${list}" varStatus="loop">
 					{
-						onum : ${item.onum},
-						destination : "${item.destination}",
-						sid : "${item.sid}",
-						price : ${item.price}, 
-						fees : "${item.fees}",						
-						reg_Time : "${item.reg_Time}",
-						limit_Time : "${item.limit_Time}",
-						res_Limit_Time : "${item.res_Limit_Time}"
+						onum : ${item.ONUM},
+						destination : "${item.DESTINATION}",
+						sid : ${item.SID},
+						shop_name : "${item['SHOP_NAME']}",
+						price : ${item.PRICE}, 
+						fees : ${item.FEES},						
+						reg_Time : "${item.REG_TIME}",
+						limit_Time : "${item.LIMIT_TIME}",
+						res_Limit_Time : "${item.RES_LIMIT_TIME}"
 					}<c:if test="${!loop.last}">,</c:if>
 				</c:forEach>
 			]

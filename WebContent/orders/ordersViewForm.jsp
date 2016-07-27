@@ -67,7 +67,7 @@
 				"<tr>"
 				+	"<td align='center'>" + ordersList[i].onum + "</td>"
 				+	"<td align='center'>" + ordersList[i].destination + "</td>"
-				+	"<td align='center'>" + ordersList[i].sid + "</td>"
+				+	"<td align='center'>" + ordersList[i].shop_name + "</td>"
 				+	"<td align='center'>" + ordersList[i].price + "</td>"
 				+	"<td align='center'>" + ordersList[i].fees+ "</td>"
 				+	"<td align='center'>" + ordersList[i].reg_Time+ "</td>"
