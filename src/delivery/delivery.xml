@@ -5,19 +5,9 @@
 
 <mapper namespace="Delivery">
 	<select id="getCount" parameterType="String" resultType="int">
-		select count(*) from qwdelivery where email=#{id}
+		select count(*) from dbtest where id=#{id}
 	</select>
 	<select id="getPasswd" parameterType="String" resultType="String">
-		select passwd from qwdelivery where email=#{email}
-	</select>
-	<select id="getId" parameterType="String" resultType="int">
-		select did from qwdelivery where email=#{email}
-	</select>
-	<select id="getInRangeMember" parameterType="Map" resultType="delivery.DeliveryDataBean">
-		select * from qwdelivery 
-		where lat &gt;= #{swLat} 
-		and lng &gt;= #{swLng}
-		and lat &lt;= #{neLat} 
-		and lng &lt;= #{neLng}
+		select passwd from dbtest where id=#{id}
 	</select>
 </mapper>

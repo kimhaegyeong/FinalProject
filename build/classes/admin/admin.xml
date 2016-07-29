@@ -5,9 +5,6 @@
 
 <mapper namespace="Admin">
 	<select id="getPasswd" parameterType="String" resultType="String">
-		select passwd from qwadmin where id=#{id}
-	</select>
-	<select id="getFees" resultType="int">
-		select fees from qwadmin
+		select passwd from MnAdmin where id=#{id}
 	</select>
 </mapper> 

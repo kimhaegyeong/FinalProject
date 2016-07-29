@@ -4,8 +4,8 @@
 <script type="text/javascript">
 //<!--
 	function checkValue(){
-		if(!index.email.value){
-			alert("email을  입력해주세요");
+		if(!index.id.value){
+			alert("id를  입력해주세요");
 			return false;
 		}else if(!index.passwd.value){
 			alert("password를 입력해주세요");
@@ -16,13 +16,13 @@
 </script>
 
 <body>
-	<form method="POST" action="login.do" name="index" onsubmit="return checkValue()">
+	<form method="post" action="login.do" name="index" onsubmit="return checkValue()">
 		<table border = "1">
 			<tr>
 				<th colspan="2">
-					<input type="radio" name="check" value="1" checked="checked">Delivery
-					<input type="radio" name="check" value="2">Stores
-					<input type="radio" name="check" value="3">Admin
+					<input type="radio" name="check" value="1" checked="checked">A
+					<input type="radio" name="check" value="2">B
+					<input type="radio" name="check" value="3">C
 				</th>
 		</tr>
 			<tr>
@@ -30,7 +30,7 @@
 					아이디
 				</th>
 				<td>
-					<input type="text" name="email">
+					<input type="text" name="id">
 				</td>
 			</tr>
 			<tr>

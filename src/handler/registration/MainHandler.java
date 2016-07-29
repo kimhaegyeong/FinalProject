@@ -15,8 +15,11 @@ public class MainHandler implements CommandHandler {
 	@RequestMapping("/main")
 	@Override
 	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int check =	Integer.parseInt(request.getParameter("check"));
+		String id = request.getParameter("id");
 		
-		int check = (int)request.getSession().getAttribute("check");
+		request.setAttribute("check", check);
+		request.setAttribute("id", id);
 		
 		String move = "";
 		if(check==1){

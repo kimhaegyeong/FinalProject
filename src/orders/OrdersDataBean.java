@@ -5,9 +5,6 @@ import java.sql.Date;
 public class OrdersDataBean {
 	/** 주문번호. */
 	private Integer onum;
-	
-	// 목적지
-	private String destination;
 
 	/** 상품가격. */
 	private Integer price;
@@ -32,12 +29,6 @@ public class OrdersDataBean {
 
 	/** 전체공개 여부. */
 	private String opencheck;
-
-	/** sid */
-	private int sid;
-	
-	/** did */
-	private int did;
 
 	public Integer getOnum() {
 		return onum;
@@ -111,27 +102,4 @@ public class OrdersDataBean {
 		this.opencheck = opencheck;
 	}
 
-	public int getSid() {
-		return sid;
-	}
-
-	public void setSid(int sid) {
-		this.sid = sid;
-	}
-
-	public int getDid() {
-		return did;
-	}
-
-	public void setDid(int did) {
-		this.did = did;
-	}
-
-	public String getDestination() {
-		return destination;
-	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
 }

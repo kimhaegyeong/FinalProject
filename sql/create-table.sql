@@ -35,7 +35,7 @@ CREATE TABLE qwdelivery
 	email varchar2(50) NOT NULL UNIQUE,
 	passwd varchar2(15) NOT NULL,
 	shop_name varchar2(50) NOT NULL,
-	owner varchar2(30) NOT NULL,
+	onner varchar2(30) NOT NULL,
 	post number(5,0) NOT NULL,
 	address varchar2(200) NOT NULL,
 	tel varchar2(30) NOT NULL,
@@ -54,11 +54,10 @@ CREATE TABLE qwdelivery
 CREATE TABLE qworders
 (
 	onum number NOT NULL,
-	destination varchar(200) NOT NULL,
 	price number NOT NULL,
 	state varchar2(20) NOT NULL,
 	reg_time date NOT NULL,
-	dprice number(4,0),
+	dprice number(4,0) NOT NULL,
 	fees number(5,0) NOT NULL,
 	limit_time date NOT NULL,
 	res_limit_time date,
@@ -94,7 +93,7 @@ CREATE TABLE qwstores
 	email varchar2(50) NOT NULL UNIQUE,
 	passwd varchar2(15) NOT NULL,
 	shop_name varchar2(50) NOT NULL,
-	owner varchar2(30) NOT NULL,
+	onner varchar2(30) NOT NULL,
 	post number(5,0) NOT NULL,
 	address varchar2(200) NOT NULL,
 	tel varchar2(30) NOT NULL,
@@ -147,7 +146,7 @@ ALTER TABLE qwqna
 	REFERENCES qwstores (sid)
 ;
 
-/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+/* ½ÃÄö½º »èÁ¦ */
 drop sequence qna_seq;
 drop sequence admin_seq;
 drop sequence bike_seq;
@@ -156,7 +155,7 @@ drop sequence delivery_seq;
 drop sequence stores_seq;
 
 
-/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+/* ½ÃÄö½º »ý¼º */
 CREATE SEQUENCE qna_seq
            INCREMENT BY 1
            START WITH   1
@@ -164,6 +163,13 @@ CREATE SEQUENCE qna_seq
            NOCYCLE
            NOCACHE;
            
+CREATE SEQUENCE admin_seq
+           INCREMENT BY 1
+           START WITH   1
+           MAXVALUE 999999
+           NOCYCLE
+           NOCACHE;
+
 CREATE SEQUENCE bike_seq
            INCREMENT BY 1
            START WITH   1
@@ -173,7 +179,7 @@ CREATE SEQUENCE bike_seq
            
 CREATE SEQUENCE orders_seq
            INCREMENT BY 1
-           START WITH   10
+           START WITH   1
            MAXVALUE 999999
            NOCYCLE
            NOCACHE;

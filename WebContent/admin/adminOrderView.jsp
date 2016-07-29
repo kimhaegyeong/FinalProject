@@ -2,10 +2,15 @@
     pageEncoding="UTF-8"%>
 
 <body>
-	<div>
-		<jsp:include page="/default/top.jsp"></jsp:include>
-	</div>
-	
-	<h2>관리자 메인페이지입니다.</h2>
-
+	${check}<br>
+	${id}<br>
+	<table border="1">
+		<tr>
+			<th style="width:20%">주문번호</th>
+			<th style="width:20%">진행상황</th>
+			<th style="width:20%">등록시간</th>
+			<th style="width:20%">도착제한시간</th>
+			<th style="width:20%"></th>
+		</tr>
+	</table>
 </body>

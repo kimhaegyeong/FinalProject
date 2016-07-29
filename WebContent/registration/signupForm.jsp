@@ -178,7 +178,7 @@ Request.prototype = {
 			<tr>
 				<th>사업주</th>
 				<td>
-					<input type="text" name="owner">
+					<input type="text" name="onner">
 				</td>
 			</tr>
 			<tr>

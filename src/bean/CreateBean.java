@@ -42,7 +42,7 @@ public class CreateBean {
 	}
 	
 	@Bean
-	public QnADao qnaDao(){
+	public QnADao qnADao(){
 		return new QnADBBean();
 	}
 	
