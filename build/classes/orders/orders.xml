@@ -4,5 +4,196 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="Orders">
-
+	<!-- 배달신청 -->
+	<!-- 오토바이 대수 -->
+	<select resultType="int" parameterType="int" id="getBikeCount">
+		select bike
+		from qwdelivery
+		where did=#{id}
+	</select>
+	<!-- 배달신청 개수 -->
+	<select resultType="int" parameterType="int" id="getCount"> 
+		select count(*) 
+		from qworders 
+		where did=#{id} and state=1 
+	</select>
+	<!--전체공개 배달신청 개수 -->
+	<select resultType="int" id="getAllCount">	
+		select count(*) 
+		from qworders 
+		where did is null 
+	</select>
+	<!-- 배달신청 목록 -->
+	<select resultType="HashMap" parameterType="int" id="getOrders"> 
+		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.did did, s.sid sid,
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
+		from qworders o, qwstores s 
+		where s.sid = o.sid and o.did=1 and state=1 order by onum desc 
+	</select>
+	<!-- 전체공개 배달신청 목록 -->
+	<select resultType="HashMap" id="getAllOrders"> 
+		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.did did, s.sid sid,
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
+		from qworders o, qwstores s 
+		where s.sid = o.sid and o.did is null and state=1 
+		order by onum desc 
+	</select>
+	<!-- 배달신청 수락 -->
+	<update parameterType="int" id="acceptBike">
+		update qwdelivery set bike=bike-1
+		where did=#{id} and bike&gt;0
+	</update>
+	<update parameterType="Map" id="acceptOrder"> 
+		update qworders set state=2, dprice=(select dprice from qwdelivery where did=#{id}), did=#{id} 
+		where onum=#{onum} 
+	</update>	
+	<!-- 배달신청 거절 -->
+	<update parameterType="Map" id="refuseOrder"> 
+		update qworders set state=3, dprice=0, did=#{id} 
+		where onum=#{onum} 
+	</update>
+	
+	<!-- 배달현황 -->
+	<!-- 배달 중 개수 -->
+	<select resultType="int" parameterType="int" id="getStateCount"> 
+		select count(*) 
+		from qworders 
+		where did=#{id} and state in(2)
+	</select>
+	<!-- 완료배달 개수 -->
+	<select resultType="int" parameterType="int" id="getCompleteCount"> 
+		select count(*) 
+		from qworders 
+		where did=#{id} and state in(5)
+	</select>
+	<!-- 배달현황 목록 -->
+	<select resultType="HashMap" parameterType="int" id="getResOrders"> 
+		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.DID did,
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name 
+		from qworders o, qwstores s where s.sid = o.sid and did=#{id} and state in(2,5) 
+		order by onum desc, state
+	</select>
+	<!-- 수락한 배달 완료 -->
+	<update parameterType="int" id="completeBike">
+		update qwdelivery set bike=bike+1
+		where did=#{id}
+	</update>
+	<update parameterType="int" id="changeState"> 
+		update qworders set state=5 
+		where onum=#{onum} 
+	</update>
+	<update parameterType="int" id="changeStateBike">
+		update qwdelivery set bike=bike+1
+		where did=#{id}
+	</update>
+	<!-- 거절한 배달 삭제 -->
+	<update parameterType="int" id="deleteState"> 
+		update qworders set state=6 
+		where onum=#{onum} 
+	</update>
+	
+	<insert id="insertOrderOne" parameterType="map">
+		insert into qworders values(
+			orders_seq.nextval, #{destination}, #{price}, '1', sysdate, #{dprice}, #{fees},
+			<choose>
+				<!-- 30분 -->
+				<when test="limit_time == 30">	
+					sysdate + 1/48
+				</when>
+				<!-- 40분 -->
+				<when test="limit_time == 40">	
+					sysdate + 40/1440
+				</when>
+				<!-- 50분 -->
+				<when test="limit_time == 50">	
+					sysdate + 50/1440
+				</when>
+				<!-- 60분 -->
+				<when test="limit_time == 60">	
+					sysdate + 1/24
+				</when>
+				<otherwise>
+			      	sysdate
+			    </otherwise>
+			</choose>
+			, 
+			<choose>
+				<!-- 10분 -->
+				<when test='res_limit_time == "y"'>	
+					sysdate + 10/1440
+				</when>
+				<otherwise>
+					sysdate
+				</otherwise>
+			</choose>
+			, #{opencheck}, #{did}, #{sid}			
+		)
+	</insert>
+	
+	<insert id="insertOrderAll" parameterType="map">
+		insert into qworders(onum, destination, price, state, reg_time, fees,
+			limit_time, res_limit_time, opencheck, sid) values(
+			orders_seq.nextval, #{destination}, #{price}, '1', sysdate, #{fees},
+			<choose>
+				<when test="limit_time == 30">	
+					sysdate + 1/48
+				</when>
+				<when test="limit_time == 40">	
+					sysdate + 40/1440
+				</when>
+				<when test="limit_time == 50">	
+					sysdate + 50/1440
+				</when>
+				<when test="limit_time == 60">	
+					sysdate + 1/24
+				</when>
+				<otherwise>
+			      	sysdate
+			    </otherwise>
+			</choose>
+			, 
+			<choose>
+				<when test='res_limit_time == "y"'>	
+					sysdate + 10/1440	
+				</when>
+				<otherwise>
+					sysdate
+				</otherwise>
+			</choose>
+			, #{opencheck}, #{sid}			
+		)
+	</insert>
+	
+	<!-- 스케쥴러 -->
+	<update id="changeOpenAll" parameterType="String">
+		update qworders set opencheck='y' where opencheck ='n' and to_char(res_limit_time, 'yyyyMMddHH24mi') = #{now}
+	</update>
+	
+	<select id="getStatusCount" resultType="int">
+		select count(*) 
+		from qworders
+		where sid=#{id} and state in(2,3,4,5)
+	</select>
+	
+	<select id="getStatusAllCount" resultType="int">
+		select count(*)
+		from qworders
+		where sid=#{id} and state in(1)
+	</select>
+	
+	<select resultType="HashMap" parameterType="int" id="getStatusOrders"> 		
+		select onum, destination, price, state, reg_time, o.dprice dprice, fees, limit_time, res_Limit_Time, opencheck, o.SID sid,
+		(select shop_name from qwdelivery qd where qd.did = d.did) shop_name 
+		from qworders o, qwdelivery d
+		where d.did = o.did and sid=#{id} and state in(1,2,3,4,5)
+		order by onum desc, state
+	</select>
+	
+	<!-- 관리자 -->
+	<select id="adminGetOrders" resultType="orders.OrdersDataBean">
+		select * from qworders where state!=4 and state!=5 and state!=6
+	</select>
+	<update id="updateCurrent" parameterType="int">
+		update qworders set state=4 where onum=#{onum}
+	</update>
 </mapper> 

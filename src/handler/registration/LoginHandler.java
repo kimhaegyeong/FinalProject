@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import admin.AdminDao;
 import delivery.DeliveryDao;
 import handler.CommandHandler;
+import stores.StoresDao;
  
 @Controller
 public class LoginHandler implements CommandHandler {
@@ -21,31 +22,41 @@ public class LoginHandler implements CommandHandler {
 	@Resource(name="adminDao")
 	private AdminDao adminDao;
 	
+	@Resource(name="storesDao")
+	private StoresDao storesDao;
+	
 	@RequestMapping("/login")
-	@Override
+	@Override 
 	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		int check = Integer.parseInt(request.getParameter("check"));
-		String id = request.getParameter("id");
+		String email = request.getParameter("email");
 		String passwd = request.getParameter("passwd");
+		
+		
 		int result = 0;
+		int id = 0;
 		
 		if(check==1){
-			//A로 로그인할 경우
-			//result = deliverydao.loginCheck(id, passwd);
+			result = deliveryDao.loginCheck(email, passwd);
 		}else if(check==2){
-			//B로 로그인할 경우
-			//result = deliverydao.loginCheck(id, passwd);
+			result = storesDao.loginCheck(email, passwd);
 		}else if(check==3){
-			//C로 로그인할 경우
-			result = adminDao.loginCheck(id, passwd);
+			result = adminDao.loginCheck(email, passwd);
 		}
 		
+		if(result==1){
+			if(check==1){
+				id = deliveryDao.getId(email);
+			}else if(check==2){
+				id = storesDao.getId(email);
+			}
+		}
 		
 		request.setAttribute("check", check);
 		request.setAttribute("id", id);
-		request.setAttribute("passwd", passwd);
 		request.setAttribute("result", result);
+		request.setAttribute("email", email);
 		
 		return new ModelAndView("/registration/login");
 	}

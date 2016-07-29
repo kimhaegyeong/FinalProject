@@ -11,10 +11,10 @@ public class StoresDataBean {
 	private String passwd;
 
 	/** 가게명. */
-	private String shopName; 
+	private String shop_name; 
 
 	/** 사업주. */
-	private String onner;
+	private String owner;
 
 	/** 우편번호. */
 	private Short post;
@@ -32,7 +32,7 @@ public class StoresDataBean {
 	private String intro;
 
 	/** 사업자번호. */
-	private Integer shopNum;
+	private Double shop_num;
 
 	/** 위도. */
 	private Double lat;
@@ -41,7 +41,7 @@ public class StoresDataBean {
 	private Double lng;
 
 	/** 최대배달비. */
-	private Short maxPrice;
+	private Short max_price;
 
 	/** 이미지 경로. */
 	private String imgpath;
@@ -70,20 +70,20 @@ public class StoresDataBean {
 		this.passwd = passwd;
 	}
 
-	public String getShopName() {
-		return shopName;
+	public String getShop_name() {
+		return shop_name;
 	}
 
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
 	}
 
-	public String getOnner() {
-		return onner;
+	public String getOwner() {
+		return owner;
 	}
 
-	public void setOnner(String onner) {
-		this.onner = onner;
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	public Short getPost() {
@@ -126,12 +126,12 @@ public class StoresDataBean {
 		this.intro = intro;
 	}
 
-	public Integer getShopNum() {
-		return shopNum;
+	public Double getShop_num() {
+		return shop_num;
 	}
 
-	public void setShopNum(Integer shopNum) {
-		this.shopNum = shopNum;
+	public void setShop_num(Double shop_num) {
+		this.shop_num = shop_num;
 	}
 
 	public Double getLat() {
@@ -150,12 +150,12 @@ public class StoresDataBean {
 		this.lng = lng;
 	}
 
-	public Short getMaxPrice() {
-		return maxPrice;
+	public Short getMax_price() {
+		return max_price;
 	}
 
-	public void setMaxPrice(Short maxPrice) {
-		this.maxPrice = maxPrice;
+	public void setMax_price(Short max_price) {
+		this.max_price = max_price;
 	}
 
 	public String getImgpath() {
