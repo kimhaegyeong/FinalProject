@@ -20,4 +20,9 @@
 		and lat &lt;= #{neLat} 
 		and lng &lt;= #{neLng}
 	</select>
+	 
+	<!-- 스케쥴러 -->
+	<update id="initBikeCount">
+		update qwdelivery set bike=0  
+	</update>
 </mapper>

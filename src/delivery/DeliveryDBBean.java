@@ -42,4 +42,9 @@ public class DeliveryDBBean implements DeliveryDao {
 	public List<DeliveryDataBean> getInRangeMember(Map<String, Double> map) {
 		return SqlMapClient.getSession().selectList("Delivery.getInRangeMember", map);
 	}
+
+	@Override
+	public void initBikeCount() {
+		SqlMapClient.getSession().selectList("Delivery.initBikeCount");
+	}
 }
