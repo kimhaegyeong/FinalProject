@@ -14,7 +14,6 @@ html, body {
 	position: absolute;
 	width: 100%;
 	height: calc(100% - 41px);
-	background: blue;
 }
 
 .extend>#left-side {
@@ -23,7 +22,7 @@ html, body {
 	left: 0;
 	width: 60%;
 	height: 100%;
-	background: yellow;
+	background: #00529a;
 }
 
 .extend>#left-size>#map-menu {
@@ -41,13 +40,12 @@ html, body {
 	left: 60%;
 	width: 40%;
 	height: 100%;
-	background: red;
 }
 
 .extend>#right-side>#input-order {
+	background: #fbfbfb;
 	width: 100%;
 	height: 50%;
-	background: gold;
 	overflow: scroll;
 	overflow-x: hidden;
 }
@@ -56,7 +54,6 @@ html, body {
 	top: 50%;
 	width: 100%;
 	height: 50%;
-	background: aqua;
 	overflow: scroll;
 	overflow-x: hidden;
 }
@@ -64,7 +61,7 @@ html, body {
 .shink>#left-side {
 	width: 35px;
 	height: 100%;
-	background: yellow;
+	background: #00529a;
 }
 
 .shink>#right-side {
@@ -73,13 +70,12 @@ html, body {
 	left: 35px;
 	width: calc(100% - 35px);
 	height: 100%;
-	background: red;
 }
 
 .shink>#right-side>#input-order {
 	width: 50%;
 	height: 100%;
-	background: gold;
+	background: #fbfbfb;
 	overflow: scroll;
 	overflow-x: hidden;
 }
@@ -90,10 +86,76 @@ html, body {
 	left: 50%;
 	width: 50%;
 	height: 100%;
-	background: aqua;
 	overflow: scroll;
 	overflow-x: hidden;
 }
+
+table {
+	width: 100%;
+	border: 0px;
+	border-collapse: collapse;
+    border: 0;
+}
+
+#input-order th {
+	width : 160px;
+    background: #f7f7f7;
+    text-align: left;
+    padding: 10px 0px 10px 15px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+#input-order td {
+	padding: 0 10px;
+	border-bottom: 1px solid #ddd;
+}
+#input-order td input {
+	width: 300px;
+	padding: 5px;
+	letter-spacing: -1px;
+}
+#input-order td input[type=radio] {
+	width:18px!important;
+	height:18px!important;
+	padding: 5px;
+}
+#input-order #btnOrder {
+	background: #ffaf69; border: 0; border-radius: 3px; padding: 10px; color: #fff; font-weight: bold; font-size:15px; margin-left: 25%;
+}
+#input-order #btnOrder:hover {
+	background: #ff871e;
+}
+#delivery-list th {
+    background: #f7f7f7;
+    padding: 10px 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+#delivery-list tr:nth-child(odd) {
+	background: #ffffec;
+}
+#delivery-list td {
+	font-size: 13px;
+	padding: 10px 5px;
+	border-bottom: 1px solid #ddd;
+}
+#delivery-list td:nth-child(6)  {
+	width: 10%;
+}
+#delivery-list td input {
+	padding: 5px;
+	letter-spacing: -1px;
+}
+#delivery-list .btn-dels {
+	border: 1px solid #bbb;
+	border-radius: 3px;
+}
+#delivery-list .btn-dels:hover {
+	background: #aaa;
+}
+
 </style>
 
 <jsp:include page="/default/top.jsp"></jsp:include>
@@ -108,103 +170,117 @@ html, body {
 	</div>
 	<div id="right-side">
 		<div id="input-order">
-			<span>주문서 작성</span>
-			<form name="orderForm">
-				<table>
-					<tr colspan="2">
-						<td><p style="color: magenta">주문자 정보</p></td>
-					</tr>
-					<tr>
-						<th>가게명
-						<th>
-						<td><input type="text" name="stoShopName"
-							value="${stoShopName}" disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>주소
-						<th>
-						<td><input type="text" name="stoAdd" value="${stoAdd}"
-							disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>목적지 주소
-						<th>
-						<td><input type="text" name="destination"></td>
-					</tr>
-					<tr>
-						<th>상품가격
-						<th>
-						<td><input type="text" name="stoPrice"></td>
-					</tr>
-					<tr>
-						<th>수수료
-						<th>
-						<td><input type="text" name="fees" value="${fees}"
-							readonly="readonly"></td>
-					</tr>
-					<tr>
-						<th>도착제한시간
-						<th>
-						<td><input type="radio" name="limit_time" value="30"
-							checked="checked">30분 <input type="radio"
-							name="limit_time" value="40">40분 <input type="radio"
-							name="limit_time" value="50">50분 <input type="radio"
-							name="limit_time" value="60">60분</td>
-					</tr>
-					<tr>
-						<th>응답제한시간
-						<th>
-						<td><input type="radio" name="res_limit_time" value="y"
-							checked="checked">예 <input type="radio"
-							name="res_limit_time" value="n">아니오</td>
-					</tr>
-					<tr>
-						<th>전체공개
-						<th>
-						<td><input type="radio" name="opencheck" value="y"
-							checked="checked">예 <input type="radio" name="opencheck"
-							value="n" disabled="true">아니오</td>
-					</tr>
-					<tr colspan="2">
-						<td>
-							<p style="color: magenta">배달업체 정보</p> <input type="hidden"
-							name="did">
-						</td>
-					</tr>
-					<tr>
-						<th>가게명
-						<th>
-						<td><input type="text" name="delShopname" disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>주소
-						<th>
-						<td><input type="text" name="delAddress" disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>전화번호
-						<th>
-						<td><input type="text" name="delTel" disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>핸드폰번호
-						<th>
-						<td><input type="text" name="delPhone" disabled="disabled"></td>
-					</tr>
-					<tr>
-						<th>배달비
-						<th>
-						<td><input type="text" name="delDPrice" readonly="readonly"></td>
-					</tr>
-					<tr>
-						<td colspan="2"><input id="btnOrder" type="button"
-							value="주문 신청"></td>
-					</tr>
-				</table>
-			</form>
+			<div style="padding: 8px; background: #0064bd; color: white; font-weight: 900; letter-spacing: -1px">
+				<span>주문서 작성</span>
+			</div>
+			<div style="padding: 10px">
+				<form name="orderForm">
+					<table style="margin: 10px 0;">
+						<tr>
+							<td colspan="2" style="padding: 0 0 10px 0">
+								<div style="width: 100%; border-bottom: 2px solid #bbb">
+									<span style="color: #333; line-height: 20px; font-size: 15px; font-weight: 900; letter-spacing: -2px;">주문자 정보</span>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>가게명
+							</th>
+							<td><input type="text" name="stoShopName"
+								value="${stoShopName}" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>주소
+							</th>
+							<td><input type="text" name="stoAdd" value="${stoAdd}"
+								disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>목적지 주소
+							</th>
+							<td><input type="text" name="destination"></td>
+						</tr>
+						<tr>
+							<th>상품가격
+							</th>
+							<td><input type="text" name="stoPrice" style="width: 275px"> 원</td>
+						</tr>
+						<tr>
+							<th>수수료
+							</th>
+							<td><input type="text" name="fees" value="${fees}"
+								readonly="readonly" style="width: 275px"> 원</td>
+						</tr>
+						<tr>
+							<th>도착제한시간
+							</th>
+							<td><input type="radio" name="limit_time" value="30"
+								checked="checked">30분 <input type="radio"
+								name="limit_time" value="40">40분 <input type="radio"
+								name="limit_time" value="50">50분 <input type="radio"
+								name="limit_time" value="60">60분</td>
+						</tr>
+						<tr>
+							<th>일정시간 뒤 전체공개
+							</th>
+							<td><input type="radio" name="res_limit_time" value="y"
+								checked="checked">예 <input type="radio"
+								name="res_limit_time" value="n">아니오</td>
+						</tr>
+						<tr>
+							<th>전체공개
+							</th>
+							<td><input type="radio" name="opencheck" value="y"
+								checked="checked">예 <input type="radio" name="opencheck"
+								value="n" disabled="true">아니오</td>
+						</tr>
+						<tr colspan="2">
+							<tr>
+								<td colspan="2" style="padding: 20px 0 10px 0">
+									<div style="width: 100%; border-bottom: 2px solid #bbb">
+										<span style="color: #333; line-height: 20px; font-size: 15px; font-weight: 900; letter-spacing: -2px;">배달업체 정보</span>
+									</div>
+								</td>
+								<input type="hidden" name="did">
+							</td>
+							</tr>
+						<tr>
+							<th>가게명
+							</th>
+							<td><input type="text" name="delShopname" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>주소
+							</th>
+							<td><input type="text" name="delAddress" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>전화번호
+							</th>
+							<td><input type="text" name="delTel" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>핸드폰번호
+							</th>
+							<td><input type="text" name="delPhone" disabled="disabled"></td>
+						</tr>
+						<tr>
+							<th>배달비
+							</th>
+							<td><input type="text" name="delDPrice" readonly="readonly" style="width: 275px"> 원</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding: 30px 0 10px 0"><input id="btnOrder" type="button"
+								value="주문 신청"></td>
+						</tr> 
+					</table>
+				</form>
+			</div>
 		</div>
 		<div id="delivery-list">
-			<span>검색 결과 </span>
+			<div style="padding: 8px; background: #0087ff; color: white; font-weight: bold; letter-spacing: -1.5px;">
+				<span>검색 결과 </span>
+			</div>
 			<div id="delivery-items"></div>
 		</div>
 	</div>
@@ -316,7 +392,7 @@ html, body {
 			orderView.deliveryList = deliveryList;
 					
 			$("#delivery-items").append(
-					"<table border='1'>"
+					"<table border>"
 					+ 	"<tbody id='del-list-tb'>"
 					+ 		"<tr>"
 					+			"<th></th>"
@@ -341,7 +417,7 @@ html, body {
 					+	"<td>" + orderView.deliveryList[i].address + "</td>"
 					+	"<td>" + orderView.deliveryList[i].tel + "</td>"
 					+	"<td>" + orderView.deliveryList[i].phone+ "</td>"
-					+	"<td>" + orderView.deliveryList[i].dprice+ "</td>"
+					+	"<td>" + orderView.deliveryList[i].dprice+ "원</td>"
 					+ 	"<td><input id='btn-del-" + i +"' class='btn-dels' type='button' value='선택'></td>"
 					+ "</tr>"
 				);
