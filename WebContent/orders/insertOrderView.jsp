@@ -8,12 +8,14 @@
 html, body {
 	width: 100% !important;
 	height: 100% !important;
+	font-size: 14px;
+	line-height: 25px;
 }
 
 #container {
 	position: absolute;
 	width: 100%;
-	height: calc(100% - 41px);
+	height: calc(100% - 47px);
 }
 
 .extend>#left-side {
@@ -155,7 +157,48 @@ table {
 #delivery-list .btn-dels:hover {
 	background: #aaa;
 }
+#delivery-list #btn-search {
+	width: 20px;
+    height: 20px;
+    padding: 7px;
+    background-image: url(/FinalProject/images/order/search.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
+}
+#delivery-list #btn-search.chg-active {
+	width: 20px;
+	height: 20px;
+    padding: 3.5px;
+    margin: 3px 5px 0 0;
+    background: white;
+    border-radius: 0 5px 5px 0;
+    background-image: url(/FinalProject/images/order/search-active.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
+}
+.inline-block-style {
+	display: inline-block;
+}
 
+#infoWindow span {
+	color: #666;
+	letter-spacing:-1.5px;
+}
+
+#infoWindow .btn-dels {
+	position: relative;
+	top: 15px;
+	left: 45px;
+	background: #ffaf69;
+	border: 0;
+	border-radius: 3px;
+	padding: 7px 20px;
+	color: #fff;
+	font-weight: bold;
+	
+}
 </style>
 
 <jsp:include page="/default/top.jsp"></jsp:include>
@@ -164,7 +207,7 @@ table {
 	<div id="left-side">
 		<div id="map-menu">
 			<img id="arrow" src="/FinalProject/images/order/left-arrow.png"
-				style="width: 25px; padding: 5px;">
+				style="width: 25px; padding: 8px;">
 		</div>
 		<div id="map"></div>
 	</div>
@@ -278,8 +321,16 @@ table {
 			</div>
 		</div>
 		<div id="delivery-list">
-			<div style="padding: 8px; background: #0087ff; color: white; font-weight: bold; letter-spacing: -1.5px;">
-				<span>검색 결과 </span>
+			<div style="padding: 8px; background: #0087ff;">
+				<span style="color: white; font-weight: bold; letter-spacing: -1.5px;">검색 결과 </span>
+				<div id="search-section" style="float: right; margin-top:-3px; height: 30px;">
+					<div class="inline-block-style">
+						<form name="findDelForm" onSubmit="return false">
+							<input id="input-search" type="text" name="delName" style="padding: 6px 0px 6px 6px;border-radius: 5px 0 0 5px;border: 0;position: relative;top: -9px;left: 5px;display:none;">
+						</form>
+					</div>
+					<div id="btn-search" class="inline-block-style"></div>
+				</div>
 			</div>
 			<div id="delivery-items"></div>
 		</div>
@@ -335,6 +386,19 @@ table {
 	});
 	
 	$("#btnOrder").on("click", function() {
+		var regExp = /^[0-9]+$/;
+		
+		if (orderForm.destination.value == "") {
+			alert("목적지를 입력하세요");
+			return false;
+		} else if (orderForm.stoPrice.value == "" || !regExp.test(orderForm.stoPrice.value)) {
+			alert("상품가격을 다시 입력하세요");
+			return false;
+		} else if (orderView.selectedDid != null && orderView.deliveryList[orderView.selectedDid].bike == 0) {
+			alert("배달할 수 있는 오토바이가 없습니다.");
+			return false;
+		}
+		
 		var params = "stoPrice=" + orderForm.stoPrice.value
 			+ "&destination=" + orderForm.destination.value
 			+ "&fees=" + orderForm.fees.value
@@ -345,6 +409,28 @@ table {
 			+ "&delDPrice=" + orderForm.delDPrice.value;
 
 		sendRequest( ajax.orderResult, "insertOrder.do", "POST", params );
+	});
+	
+	$("#btn-search").on("click", function() {
+		if ($("#input-search").css("display") == "none") {
+			$("#input-search").show();
+			$("#btn-search").addClass("chg-active");
+		} else {
+			var params = "delName=" + encodeURI(findDelForm.delName.value);
+			sendRequest( ajax.fromServer, "findDelivery.do", "POST", params );
+		}
+	});
+	
+	$("#input-search").on("keypress", function(e) {
+		console.log("kkk");
+		if (e.keyCode == 13) {		// 엔터키 눌렀을 때
+			e.preventDefault();
+
+			var params = "delName=" + encodeURI(findDelForm.delName.value);
+			sendRequest( ajax.fromServer, "findDelivery.do", "POST", params );
+
+			return false;
+		}
 	});
 	
 	$("input[name='opencheck']").on("click", function() {
@@ -362,6 +448,7 @@ table {
 		mapLevel : 3, 				// 맵의 레벨
 		infowindow : null,        	// 인포 윈도우 창
 		deliveryList : null,		// 배달업체 목록
+		selectedDid : null,
 		loadMap : function (lat, lng) {
 			var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
 	        var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -428,6 +515,7 @@ table {
 			// 모든 .btn-dels가 생성된 뒤에 클릭이벤트를 설정
 			$(".btn-dels").on("click", function() {
 				var index = $(this).attr("id").split("-")[2];
+				orderView.selectedDid = index;
 				orderView.inputDelData(index);
 			});
 		},
@@ -460,6 +548,12 @@ table {
 	     },
 	     addEvent : {
              mouseDrag: function() {
+            	if ($("#input-search").css("display") != "none") {
+            		$("#input-search").val("");
+         			$("#input-search").hide();
+         			$("#btn-search").removeClass("chg-active");
+         		}
+            	 
                  // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
                  daum.maps.event.addListener(map, 'dragend', function() {        
                      
@@ -472,7 +566,12 @@ table {
                  });
              },
              zoomInOut: function () {
-                 
+            	if ($("#input-search").css("display") != "none") {
+            		$("#input-search").val("");
+          			$("#input-search").hide();
+          			$("#btn-search").removeClass("chg-active");
+          		}
+            	 
                  // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
                  var zoomControl = new daum.maps.ZoomControl();
                  map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
@@ -489,12 +588,12 @@ table {
              },
              mouseClick: function(marker, index) {
                  // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-               var iwContent = '<div id="infoWindow" style="margin-top:-20px; padding: 10px 10px 30px 10px">'
-	                 	+ 		'<p>' + orderView.deliveryList[index].shopName + '</p>'
-	                 	+ 		'<span>주소:' + orderView.deliveryList[index].address + '</span><br>'
-	                 	+ 		'<span>전화번호:' + orderView.deliveryList[index].tel + '</span><br>'
-	                 	+ 		'<span>핸드폰번호 :' + orderView.deliveryList[index].phone + '</span><br>'
-	                 	+ 		'<span>배달비용 :' + orderView.deliveryList[index].dprice + '원</span><br>'
+               var iwContent = '<div id="infoWindow" style="margin-top:-20px; padding: 10px 10px 30px 10px;">'
+	                 	+ 		'<p style="font-weight:bold; letter-spacing: -1px; margin-bottom: 5px">' + orderView.deliveryList[index].shopName + '</p>'
+	                 	+ 		'<span><b>주소 : </b>' + orderView.deliveryList[index].address + '</span><br>'
+	                 	+ 		'<span><b>전화번호: </b>' + orderView.deliveryList[index].tel + '</span><br>'
+	                 	+ 		'<span><b>핸드폰번호 : </b>' + orderView.deliveryList[index].phone + '</span><br>'
+	                 	+ 		'<span><b>배달비용 : </b>' + orderView.deliveryList[index].dprice + '원</span><br>'
 	                 	+		'<input class="btn-dels" type="button" value="배달업체 선택" onclick="orderView.inputDelData(' + index + ')">'
 	                 	+ '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 	            var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
@@ -514,6 +613,8 @@ table {
              }
          },
          inputDelData : function (index) {
+        	orderView.selectedDid = index;
+        	 
 			$("input[name='did']").val(this.deliveryList[index].did);
 			$("input[name='delShopname']").val(this.deliveryList[index].shopName);
 			$("input[name='delAddress']").val(this.deliveryList[index].address);
@@ -539,11 +640,13 @@ table {
 					// console.log(httpRequest.responseText);
 					var res = eval( "(" + httpRequest.responseText + ")" ); 
 					if (res.result.code == "not_result") {
-						$("#delivery-items").innerHTML = res.result.data;
+						if (!$.isEmptyObject($("#delivery-items"))) {
+							$("#delivery-items").empty();
+						} 
+						$("#delivery-items").append("<p style='padding-left: 10px'>" + res.result.data + "</p>")	;
 					}
 					else if (res.result.code == "success") {
 						orderView.printDeliveryList(res.result.data);
-						
 					}
 				} else {
 					console.log("에러 발생");

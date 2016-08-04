@@ -25,7 +25,7 @@ function getXMLHttpRequest() {
 	}	
 }
 
-function sendRequest( callback, url, method, params ) {
+function sendRequest( callback, url, method, params, cors) {
 	httpRequest = getXMLHttpRequest();
 	
 	// callback
