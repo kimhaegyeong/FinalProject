@@ -42,7 +42,7 @@ public class DeliveryDBBean implements DeliveryDao {
 	public List<DeliveryDataBean> getInRangeMember(Map<String, Double> map) {
 		return SqlMapClient.getSession().selectList("Delivery.getInRangeMember", map);
 	}
-
+	
 	@Override
 	public List<DeliveryDataBean> findDelName(String delname) {
 		return SqlMapClient.getSession().selectList("Delivery.findDelName", delname);

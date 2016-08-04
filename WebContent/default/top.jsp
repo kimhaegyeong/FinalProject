@@ -19,7 +19,7 @@
 				<li><a href="ordersViewForm.do?id=${sessionScope.id}"><span>배달신청보기</span></a></li>
 				<li><a href="ordersConditionForm.do?id=${sessionScope.id}"><span>배달현황보기</span></a></li>
 				<li><a href="#"><span>정보 수정하기</span></a></li>
-				<li><a href="#"><span>QNA게시판 가기</span></a></li>
+				<li><a href="list.do"><span>QNA게시판 가기</span></a></li>
 				<li><a href="#"><span>정산하기</span></a></li>
 				<li><a href="#"><span>회원탈퇴</span></a></li>
 				<li><a href="logout.do"><span>로그아웃</span></a></li>
@@ -37,7 +37,7 @@
 				<li><a href="insertOrderView.do"><span>주문 신청</span></a></li>
 				<li><a href="ordersStatusForm.do"><span>주문 현황 보기</span></a></li>
 				<li><a href="#"><span>정보 수정하기</span></a></li>
-				<li><a href="#"><span>QNA게시판 가기</span></a></li>
+				<li><a href="list.do"><span>QNA게시판 가기</span></a></li>
 				<li><a href="#"><span>정산하기</span></a></li>
 				<li><a href="#"><span>회원탈퇴</span></a></li>
 				<li><a href="logout.do"><span>로그아웃</span></a></li>
@@ -53,7 +53,7 @@
 			<ul class="menu">
 				<li><a href="adminOrderView.do"><span>주문현황보기</span></a></li>
 				<li><a href="adminDeleteView.do?view=0"><span>회원정보 삭제 하기</span></a></li>
-				<li><a href="#"><span>질문답변하기</span></a></li>
+				<li><a href="list.do"><span>질문답변하기</span></a></li>
 				<li><a href="adminModifyForm.do"><span>정보수정하기</span></a></li>
 				<li><a href="#"><span>정산하기</span></a></li>
 				<li><a href="logout.do"><span>로그아웃</span></a></li>

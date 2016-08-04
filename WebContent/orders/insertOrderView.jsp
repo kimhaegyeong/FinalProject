@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <link rel="stylesheet" href="/FinalProject/css/remodal.css">
 <link rel="stylesheet"
 	href="/FinalProject/css/remodal-default-theme.css">
@@ -15,7 +15,8 @@ html, body {
 #container {
 	position: absolute;
 	width: 100%;
-	height: calc(100% - 47px);
+	height: calc(100% - 46px);
+	overflow-y: hidden;
 }
 
 .extend>#left-side {
@@ -58,6 +59,7 @@ html, body {
 	height: 50%;
 	overflow: scroll;
 	overflow-x: hidden;
+	border-top: 2px solid #444;
 }
 
 .shink>#left-side {
@@ -170,7 +172,7 @@ table {
 	width: 20px;
 	height: 20px;
     padding: 3.5px;
-    margin: 3px 5px 0 0;
+    margin: 4px 5px 0 0;
     background: white;
     border-radius: 0 5px 5px 0;
     background-image: url(/FinalProject/images/order/search-active.png);
@@ -207,7 +209,7 @@ table {
 	<div id="left-side">
 		<div id="map-menu">
 			<img id="arrow" src="/FinalProject/images/order/left-arrow.png"
-				style="width: 25px; padding: 8px;">
+				style="width: 25px; padding: 4px;">
 		</div>
 		<div id="map"></div>
 	</div>

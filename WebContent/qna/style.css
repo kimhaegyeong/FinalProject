@@ -1,0 +1,75 @@
+/* Design by Shin Sang-hoon */
+
+h1,h2,h3,h4,h5,h6
+{
+	color: #4C4C4C;	
+}
+a {
+	text-decoration: none;
+	font-size:12px;	
+}
+a:hover {
+	text-decoration: none;
+	color : white;
+	font-weight: bold;
+}
+body
+{
+	text-align: center;
+	background-color : #F8F8FF;
+	font-size:11px;
+	font-family:verdana;
+	color: #696969;
+	padding:4px;
+}
+table {	
+	width: 1200px;
+	border: 3px solid;	
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	margin: auto;
+}
+
+table input{	
+	color: black;	
+}
+
+textarea {
+	border: 1px solid #6A84B7;
+}
+
+.input {
+	border: 1px solid;
+	width: 150px;
+}
+.inputbutton {
+	border: 3px solid;
+	font-size:12px;
+	font-weight: bold;
+	width: 80px;  
+	height: 25px;  
+ 	text-align: center;  
+}
+
+th {	
+	font-size : 11px;
+	border : 1px solid;
+	margin : 0px;
+	padding : 3px;
+	height: 30px;
+	width: 100px;
+}
+td {	
+	font-size : 11px;
+	border : 1px solid gray;
+	margin : 0px;
+	padding : 3px;
+	height: 30px;
+	width: 300px;
+}
+span {
+	font-size : 1.2em;	
+}
+
+
+

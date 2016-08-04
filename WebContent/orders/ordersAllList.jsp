@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@ include file="setting.jsp" %>
 
 <c:if test="${fn:length(allList) == 0}">
 	{
@@ -24,9 +23,9 @@
 						shop_name : "${item['SHOP_NAME']}",
 						price : ${item.PRICE}, 
 						fees : ${item.FEES},						
-						reg_Time : "${item.REG_TIME}",
-						limit_Time : "${item.LIMIT_TIME}",
-						res_Limit_Time : "${item.RES_LIMIT_TIME}"
+						reg_Time : "<fmt:formatDate value="${item.REG_TIME}" pattern="MM/dd HH:mm"/>",
+						limit_Time : "<fmt:formatDate value="${item.LIMIT_TIME}" pattern="HH:mm"/>",
+						res_Limit_Time : "<fmt:formatDate value="${item.RES_LIMIT_TIME}" pattern="HH:mm"/>"
 					}<c:if test="${!loop.last}">,</c:if>
 				</c:forEach>
 			]

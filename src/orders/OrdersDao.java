@@ -15,7 +15,8 @@ public interface OrdersDao {
 	public int acceptOrder(Map<String, Integer> map);
 	public int acceptBike(int id);
 	public int refuseOrder(Map<String, Integer> map);
-	public List<HashMap<String, Object>> getResOrders(int did);
+	public List<HashMap<String, Object>> getResOrders(int id);
+	public List<HashMap<String, Object>> getResAllOrders(Map<String, Integer> map);
 	public int completeBike(int id);
 	public int changeState(int onum);
 	public int deleteState(int onum);

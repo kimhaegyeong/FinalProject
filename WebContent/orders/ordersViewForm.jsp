@@ -5,6 +5,45 @@
     pageEncoding="UTF-8"%>    
 <%@ include file="setting.jsp" %>
 
+<style>
+table {
+	width: 1200px;
+	margin : 0px 0px 0px 100px;
+	border: 0px;
+	border-collapse: collapse;
+    border: 0;
+}
+
+th {
+	width : 160px;
+    background: #f7f7f7;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(odd) {
+	background: #ffffec;
+}
+
+td {
+	font-size: 13px;
+	text-align: center;
+	padding: 10px 5px;
+	border-bottom: 1px solid #ddd;
+}
+
+h2, h4 {
+	margin : 10px 10px 10px 100px;
+}
+
+div#scooter {
+	margin : 10px 10px 10px 1150px;
+}
+
+</style>
 <link rel="stylesheet" href="/FinalProject/css/remodal.css">
 <link rel="stylesheet" href="/FinalProject/css/remodal-default-theme.css">
 
@@ -14,7 +53,7 @@
 
 <script type="text/javascript">
 	//<!--		
-	// **** 선택 배달신청 ****//			
+	// **** 선택 배달신청 ****//	
 	function loadOrders() {
        	var params = "id=" + ${id};       	
 		sendRequest( fromServer, "ordersList.do", "POST", params );
@@ -31,10 +70,11 @@
 					// 선택 배달신청
 					if (res.result.code == "not_result") {
 						// 신청목록 X
+						printTitle(res.result.data);
 						$("#orderList").innerHTML = res.result.data;
 					} else if (res.result.code == "success") {		
-						// 신청목록 O						
-						printOrdersList(res.result.data);						
+						// 신청목록 O	
+						printOrdersList(res.result.data);
 					}				
 			} else {
 				msg += "에러 발생";
@@ -44,17 +84,47 @@
 		}
 	}	
 	
+	
+	function printTitle(ordersList) {
+		if (!$.isEmptyObject($("#orderTitle"))) {
+			$("#orderTitle").empty();
+		} 	
+		if(ordersList == "신청 주문이 없습니다. 잠시 기다려주세요.") {
+			$("#orderTitle").append(				
+					"<h4> 배달 신청 &nbsp0 </h4>"
+					+ "<table border='1'>"
+					+ 	"<tbody id='list'>"
+					+		"<tr>"
+					+			"<th style='width:4%'>No</th>"	
+					+			"<th style='width:30%'>목적지</th>"
+					+			"<th style='width:15%'>가게 명</th>"
+					+			"<th style='width:7%'>상품가격</th>"
+					+			"<th style='width:7%'>수수료</th>"
+					+			"<th style='width:8%'>등록시간</th>"
+					+			"<th style='width:8%'>도착희망시간</th>"
+					+			"<th style='width:8%'>응답제한시간</th>"
+					+			"<th style='width:8%'>결정</th>"
+					+		"</tr>"
+					+		"<tr>"
+					+			"<th style='background:#FFF' colspan='9'>신청된 배달이 없습니다. 잠시 기다려 주세요</th>"
+					+		"</tr>"
+					+ 	"<tbody>"
+					+"</table>"
+			);
+		}
+	}
+	
 	// 선택 배달신청
 	function printOrdersList(ordersList) {
 		if (!$.isEmptyObject($("#orderTitle"))) {
 			$("#orderTitle").empty();
-		} 
+		} 		
 		$("#orderTitle").append(				
 				"<h4> 배달 신청 &nbsp" + ordersList.length +"</h4>"
 				+ "<table border='1'>"
 				+ 	"<tbody id='list'>"
 				+		"<tr>"
-				+			"<th style='width:5%'>주문번호</th>"	
+				+			"<th style='width:4%'>No</th>"	
 				+			"<th style='width:30%'>목적지</th>"
 				+			"<th style='width:15%'>가게 명</th>"
 				+			"<th style='width:7%'>상품가격</th>"
@@ -62,29 +132,33 @@
 				+			"<th style='width:8%'>등록시간</th>"
 				+			"<th style='width:8%'>도착희망시간</th>"
 				+			"<th style='width:8%'>응답제한시간</th>"
-				+			"<th style='width:8%'>수락/거절</th>"
+				+			"<th style='width:8%'>결정</th>"
 				+		"</tr>"
 				+ 	"<tbody>"
 				+"</table>"
 		);
-		
-		for (var i in ordersList) {
-			$("#list").append(
-				"<tr>"
-				+	"<td align='center'>" + ordersList[i].onum + "</td>"
-				+	"<td align='center'>" + ordersList[i].destination + "</td>"
-				+	"<td align='center'>" + ordersList[i].shop_name + "</td>"
-				+	"<td align='center'>" + ordersList[i].price + " 원</td>"
-				+	"<td align='center'>" + ordersList[i].fees+ " 원</td>"
-				+	"<td align='center'>" + ordersList[i].reg_Time+ "</td>"
-				+	"<td align='center'>" + ordersList[i].limit_Time+ "</td>"
-				+	"<td align='center'>" + ordersList[i].res_Limit_Time+ "</td>"
-				+ 	"<td align='center'>"
-				+		"<input type='button' value='수락' onclick='agree("+ordersList[i].onum+")'>"
-				+		"<input type='button' value='거절' onclick='disagree("+ordersList[i].onum+")'>"
-				+   "</td>"
-				+ "</tr>"
-			);			
+		if(ordersList.length != 0) {	
+			for (var i in ordersList) {				
+				if(ordersList[i].reg_Time.substring(6,11)==ordersList[i].res_Limit_Time) {
+					ordersList[i].res_Limit_Time = "무제한";
+				}				
+				$("#list").append(
+					"<tr>"
+					+	"<td>" + ordersList[i].onum + "</td>"
+					+	"<td>" + ordersList[i].destination + "</td>"
+					+	"<td>" + ordersList[i].shop_name + "</td>"
+					+	"<td>" + ordersList[i].price + " 원</td>"
+					+	"<td>" + ordersList[i].fees+ " 원</td>"
+					+	"<td>" + ordersList[i].reg_Time+ "</td>"
+					+	"<td>" + ordersList[i].limit_Time+ "</td>"
+					+	"<td>" + ordersList[i].res_Limit_Time+ "</td>"
+					+ 	"<td>"
+					+		"<input type='button' value='수락' onclick='agree("+ordersList[i].onum+")'>&nbsp"
+					+		"<input type='button' value='거절' onclick='disagree("+ordersList[i].onum+")'>"
+					+   "</td>"
+					+ "</tr>"
+				);			
+			}
 		}
 	}
 	
@@ -103,6 +177,7 @@
 				// 전체 배달신청
 				if (res.result.code == "not_result") {
 					// 신청목록 X
+					printAllTitle();
 					$("#orderAllList").innerHTML = res.result.data;
 				}
 				else if (res.result.code == "success") {		
@@ -117,6 +192,32 @@
 		}
 	}		
 	
+	function printAllTitle() {
+		if (!$.isEmptyObject($("#orderAllTitle"))) {
+			$("#orderAllTitle").empty();
+		} 
+		$("#orderAllTitle").append(
+				"<h4> 전체공개 배달 신청 &nbsp0</h4>"
+				+ "<table border='1'>"
+				+ 	"<tbody id='allList'>"
+				+		"<tr>"
+				+			"<th style='width:4%'>No</th>"	
+				+			"<th style='width:30%'>목적지</th>"
+				+			"<th style='width:15%'>가게 명</th>"
+				+			"<th style='width:7%'>상품가격</th>"
+				+			"<th style='width:7%'>수수료</th>"
+				+			"<th style='width:8%'>등록시간</th>"
+				+			"<th style='width:8%'>도착희망시간</th>"
+				+			"<th style='width:8%'>응답제한시간</th>"
+				+			"<th style='width:8%'>결정</th>"
+				+		"</tr>"
+				+		"<tr>"
+				+			"<th style='background:#FFF' colspan='9'>전체공개 배달신청이 없습니다. 잠시 기다려 주세요</th>"
+				+		"</tr>"
+				+ 	"<tbody>"
+				+"</table>"
+		);
+	}
 	// 전체 배달신청
 	function printOrdersAllList(ordersAllList) {
 		if (!$.isEmptyObject($("#orderAllTitle"))) {
@@ -127,7 +228,7 @@
 				+ "<table border='1'>"
 				+ 	"<tbody id='allList'>"
 				+		"<tr>"
-				+			"<th style='width:5%'>주문번호</th>"	
+				+			"<th style='width:4%'>No</th>"	
 				+			"<th style='width:30%'>목적지</th>"
 				+			"<th style='width:15%'>가게 명</th>"
 				+			"<th style='width:7%'>상품가격</th>"
@@ -135,7 +236,7 @@
 				+			"<th style='width:8%'>등록시간</th>"
 				+			"<th style='width:8%'>도착희망시간</th>"
 				+			"<th style='width:8%'>응답제한시간</th>"
-				+			"<th style='width:8%'>수락</th>"
+				+			"<th style='width:8%'>결정</th>"
 				+		"</tr>"
 				+ 	"<tbody>"
 				+"</table>"
@@ -151,7 +252,7 @@
 				+	"<td align='center'>" + ordersAllList[i].fees+ " 원</td>"
 				+	"<td align='center'>" + ordersAllList[i].reg_Time+ "</td>"
 				+	"<td align='center'>" + ordersAllList[i].limit_Time+ "</td>"
-				+	"<td align='center'>" + ordersAllList[i].res_Limit_Time+ "</td>"
+				+	"<td align='center'> 무제한 </td>"
 				+ 	"<td align='center'>"
 				+		"<input type='button' value='수락' onclick='agree("+ordersAllList[i].onum+")'>"
 				+   "</td>"
@@ -159,7 +260,7 @@
 			);			
 		}
 	}	
-		
+	
 	// 수락
 	function agree(onum) {			
 		var params = "id=" + ${id} + "&num=1&onum=" + onum;      		
@@ -216,6 +317,14 @@
 			msg += "통신중";	
 		}
 	}
+	// 키보드가 눌러졌을때 이벤트 실행
+	document.onkeydown = function() { 
+		if(event.keyCode==27) {
+			// 키코드값 27(ESC키)가 눌러졌는지 확인
+			location.href="ordersViewForm.do?id=" + ${id};
+			return false;	// ESC키 본래의 역할을 막음
+		}
+	}
 	//-->
 </script>
 
@@ -223,7 +332,7 @@
 <div class="remodal" data-remodal-id="modal">
 	<button data-remodal-action="close" class="remodal-close"
 			onclick="location='ordersViewForm.do?id=${id}'"></button>
-<h1></h1>
+	<h1></h1>
 	<p></p>
 	<br>
 	<button data-remodal-action="cancel" class="remodal-cancel" 
@@ -236,8 +345,10 @@
 	<jsp:include page="/default/top.jsp"></jsp:include>
 </div>
 
-<div align="right" style="font-size: 30px;"> 
-	<img src="/FinalProject/images/order/scooter.png" style="width: 30px; height: 30px;"/> ${bikeCount} 대
+<h2>배달 신청 뷰 페이지</h2>
+
+<div id="scooter" style="font-size: 25px;"> 
+	현재  <img src="/FinalProject/images/order/scooter.png" style="width: 25px; height: 25px;"/> ${bikeCount} 대
 </div>
 <c:if test="${id == null}">	
 	<div>로그인이 필요합니다 <br></div>
@@ -250,16 +361,20 @@
 			<div id="orderTitle"></div>
 		</div>		
 		<br>
-		<hr size="4" color="#00FFFF" width="100%" align="Left">
-		<div align="right" style="font-size: 30px;"> 
-			<img src="/FinalProject/images/order/scooter.png" style="width: 30px; height: 30px;"/> ${bikeCount} 대
-		</div>		
+		<hr size="2" color="#ddd" width="99.8%" align="Left">
+		<div id="scooter" style="font-size: 25px;"> 
+			현재  <img src="/FinalProject/images/order/scooter.png" style="width: 25px; height: 25px;"/> ${bikeCount} 대
+		</div>	
 		<!-- 전체 배달 신청 -->
 		<div id="orderAllList">
 			<div id="orderAllTitle"></div>
 		</div>
 	</body>
 </c:if>
+
+<div>
+	<jsp:include page="/default/footer.jsp"></jsp:include>
+</div>
 
 <!-- 모달 사용 -->
 <script type="text/javascript" src="/FinalProject/js/remodal.min.js">

@@ -41,16 +41,16 @@ public class CreateBean {
 		return new OrdersDBBean();
 	}
 	
-	@Bean
-	public QnADao qnaDao(){
-		return new QnADBBean();
-	}
 	
 	@Bean
 	public StoresDao storesDao(){
 		return new StoresDBBean();
 	}
-
+	
+	@Bean
+	public QnADao qnaDao(){
+		return new QnADBBean();
+	}
 	
 	@Bean
 	public ViewResolver viewResolver() throws ClassNotFoundException {

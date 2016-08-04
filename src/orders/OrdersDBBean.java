@@ -61,6 +61,11 @@ public class OrdersDBBean implements OrdersDao {
 	// 배달현황 가져오기
 	public List<HashMap<String, Object>> getResOrders(int id) {	
 		return SqlMapClient.getSession().selectList("Orders.getResOrders", id);
+	}	
+	
+	// 배달완료현황 가져오기
+	public List<HashMap<String, Object>> getResAllOrders(Map<String, Integer> map) {	
+		return SqlMapClient.getSession().selectList("Orders.getResAllOrders", map);
 	} 
 	
 	// 배달완료 오토바이+1
@@ -96,19 +101,21 @@ public class OrdersDBBean implements OrdersDao {
 		return SqlMapClient.getSession().update("Orders.updateCurrent", onum);
 	}
 	
+	// 스케줄러
 	@Override
 	public int changeOpenAll(String now) {
 		return SqlMapClient.getSession().update("Orders.changeOpenAll", now);
 	}
 	
+	// 주문현황
 	public int getStatusCount(int id) {
 		return SqlMapClient.getSession().selectOne("Orders.getStatusCount", id);
 	}
 	
 	public int getStatusAllCount(int id) {
 		return SqlMapClient.getSession().selectOne("Orders.getStatusAllCount", id);
-	}
-	
+	}	
+
 	public List<HashMap<String, Object>> getStatusOrders(int id) {	
 		return SqlMapClient.getSession().selectList("Orders.getStatusOrders", id);
 	} 

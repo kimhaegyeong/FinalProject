@@ -15,27 +15,32 @@
 	<select resultType="int" parameterType="int" id="getCount"> 
 		select count(*) 
 		from qworders 
-		where did=#{id} and state=1 
+		where did=#{id} and state=1 and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
+		
 	</select>
 	<!--전체공개 배달신청 개수 -->
 	<select resultType="int" id="getAllCount">	
 		select count(*) 
 		from qworders 
-		where did is null 
+		where did is null and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
+		 
 	</select>
 	<!-- 배달신청 목록 -->
 	<select resultType="HashMap" parameterType="int" id="getOrders"> 
 		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.did did, s.sid sid,
 		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
 		from qworders o, qwstores s 
-		where s.sid = o.sid and o.did=1 and state=1 order by onum desc 
+		where s.sid = o.sid and o.did=#{id} and state=1 and opencheck='n'
+		and to_char(reg_time, 'yyyy-mm-dd') = to_char((select sysdate from dual), 'yyyy-mm-dd') 
+		order by onum desc 
 	</select>
 	<!-- 전체공개 배달신청 목록 -->
 	<select resultType="HashMap" id="getAllOrders"> 
 		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.did did, s.sid sid,
 		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
 		from qworders o, qwstores s 
-		where s.sid = o.sid and o.did is null and state=1 
+		where s.sid = o.sid and opencheck='y' and state=1
+		and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 		order by onum desc 
 	</select>
 	<!-- 배달신청 수락 -->
@@ -58,20 +63,30 @@
 	<select resultType="int" parameterType="int" id="getStateCount"> 
 		select count(*) 
 		from qworders 
-		where did=#{id} and state in(2)
+		where did=#{id} and state=2 and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 	</select>
 	<!-- 완료배달 개수 -->
 	<select resultType="int" parameterType="int" id="getCompleteCount"> 
 		select count(*) 
 		from qworders 
-		where did=#{id} and state in(5)
+		where did=#{id} and state=5 and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 	</select>
 	<!-- 배달현황 목록 -->
-	<select resultType="HashMap" parameterType="int" id="getResOrders"> 
+	 <select resultType="HashMap" parameterType="int" id="getResOrders">
 		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, o.DID did,
-		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name 
-		from qworders o, qwstores s where s.sid = o.sid and did=#{id} and state in(2,5) 
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name
+		from qworders o, qwstores s 
+		where s.sid = o.sid and did=#{id} and state=2 and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 		order by onum desc, state
+	 </select>
+	 <!-- 배달완료 목록 -->
+	 <select resultType="HashMap" parameterType="Map" id="getResAllOrders"> 
+		select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, did, shop_name, r
+		from (select onum, destination, price, state, reg_time, dprice, fees, limit_time, res_Limit_Time, opencheck, did, 
+		(select shop_name from qwstores qs where qs.sid = s.sid) shop_name, rownum r
+		from (select * from qworders where to_char(reg_time, 'yyyy-mm-dd') = to_char((select sysdate from dual), 'yyyy-mm-dd') 
+		order by onum desc, state asc) qs, qwstores s where qs.sid=s.sid and did=#{id} and state=5 order by onum desc, state asc)
+		where r &gt;= #{start} and r &lt;= #{end}
 	</select>
 	<!-- 수락한 배달 완료 -->
 	<update parameterType="int" id="completeBike">
@@ -169,23 +184,24 @@
 		update qworders set opencheck='y' where opencheck ='n' and to_char(res_limit_time, 'yyyyMMddHH24mi') = #{now}
 	</update>
 	
+	<!-- 배달신청현황 -->
 	<select id="getStatusCount" resultType="int">
 		select count(*) 
 		from qworders
-		where sid=#{id} and state in(2,3,4,5)
+		where sid=#{id} and state in(2,3,4,5) and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 	</select>
 	
 	<select id="getStatusAllCount" resultType="int">
 		select count(*)
 		from qworders
-		where sid=#{id} and state in(1)
+		where sid=#{id} and state=1 and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 	</select>
 	
 	<select resultType="HashMap" parameterType="int" id="getStatusOrders"> 		
 		select onum, destination, price, state, reg_time, o.dprice dprice, fees, limit_time, res_Limit_Time, opencheck, o.SID sid,
 		(select shop_name from qwdelivery qd where qd.did = d.did) shop_name 
 		from qworders o, qwdelivery d
-		where d.did = o.did and sid=#{id} and state in(1,2,3,4,5)
+		where d.did(+) = o.did and sid=#{id} and state in(1,2,3,4,5) and to_char(reg_time, 'yyyy-mm-dd')=to_char((select sysdate from dual), 'yyyy-mm-dd')
 		order by onum desc, state
 	</select>
 	
@@ -196,4 +212,4 @@
 	<update id="updateCurrent" parameterType="int">
 		update qworders set state=4 where onum=#{onum}
 	</update>
-</mapper> 
+</mapper>

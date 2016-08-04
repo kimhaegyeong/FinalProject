@@ -1,8 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- member.xml -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="Qna">
+<mapper namespace="Board">
+	<!-- 작성자 얻어오기 -->
+	<select id="getDWriter" resultType="String" parameterType="int">
+		select shop_name from qwdelivery where did=#{id}
+	</select>
+	<select id="getSWriter" resultType="String" parameterType="int">
+		select shop_name from qwstores where sid=#{id}
+	</select>		
+	
+	<!-- 검색 글 개수 얻어오기 -->
+	<select id="getSearchTitle" resultType="int" parameterType="String">
+		select count(*) from qwqna where subject like '%' || #{searchText} || '%'
+	</select>
+	<select id="getSearchWriter" resultType="int" parameterType="String">
+		select count(*) from qwqna where writer like '%' || #{searchText} || '%'
+	</select>
+	
+	<select id="getCount" resultType="int">
+		select count(*) from qwqna
+	</select>
+	
+	<select id="getArticles" parameterType="Map" resultType="qna.QnADataBean"> 
+		<choose>
+			<!-- 제목검색 -->
+			<when test="searchText != null and searchText != '' and type == 1">	
+				select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,r 
+     			from (select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,rownum r
+     			from (select * from qwqna where subject like '%' || #{searchText} || '%' 
+     			order by refe desc, re_step asc) order by category desc, refe desc, re_step asc )
+   				where r &gt;= #{start} and r &lt;= #{end}
+			</when>
+			<!-- 작성자검색 -->
+			<when test="searchText != null and searchText != '' and type == 2">	
+				select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,r 
+     			from (select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,rownum r
+     			from (select * from qwqna where writer like '%' || #{searchText} || '%'
+     			order by refe desc, re_step asc) order by category desc, refe desc, re_step asc )
+   				where r &gt;= #{start} and r &lt;= #{end}
+			</when>
+			<otherwise>
+		      	select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,r 
+     			from (select no,writer,subject,passwd,reg_date,refe,re_step,re_level,content,readcount,sid,did,id,category,rownum r
+     			from (select * from qwqna order by refe desc, re_step asc) order by category desc, refe desc, re_step asc )
+   				where r &gt;= #{start} and r &lt;= #{end}
+		    </otherwise>
+		</choose>		
+	</select>
+	
+	<insert id="insertArticle" parameterType="qna.QnADataBean">
+		insert into qwqna(no, content, writer, subject, reg_date, re_step, re_level, refe, readcount, category, sid, did, id, passwd)
+		values(qna_seq.NEXTVAL, #{content}, #{writer}, #{subject}, #{reg_date}, #{re_step}, #{re_level}, #{refe}, 
+		#{readcount}, #{category},
+		<choose>
+			<when test="sid != null and sid !='' and sid != 0">	
+				${sid},
+			</when>
+			<otherwise>
+		      	null,
+		    </otherwise>
+		</choose>
+		<choose>
+			<when test="did != null and did !='' and did != 0">	
+				${did},
+			</when>
+			<otherwise>
+		      	null,
+		    </otherwise>
+		</choose>
+		<choose>
+			<when test="id != null and id !=''">
+				'${id}',
+			</when>
+			<otherwise>
+		      	null,
+		    </otherwise>
+		</choose>
+		#{passwd})
+	</insert>
+	
+	<select id="getMaxNum" resultType="int">
+		select max(no) from qwqna
+	</select>
+	
+	<select id="getArticle" parameterType="int" resultType="qna.QnADataBean">
+		select * from qwqna where no=#{no}
+	</select>
+	
+	<update id="addCount" parameterType="int">
+		update qwqna set readcount=readcount+1 where no=#{num}
+	</update>
+	
+	<update id="updateReply" parameterType="qna.QnADataBean">
+		update qwqna set re_step=re_step+1 where refe=#{refe} and re_step>#{re_step}
+	</update>
+	
+	<update id="modifyArticle" parameterType="qna.QnADataBean">
+		update qwqna set subject=#{subject}, content=#{content}, passwd=#{passwd} where no=#{no}
+	</update>
+	
+	<select id="replyCheck" parameterType="qna.QnADataBean" resultType="int">
+		select count(*) from qwqna where refe=#{refe} and re_step=#{re_step}+1 and re_level>#{re_level}
+	</select>
+	
+	<update id="deleteReply" parameterType="qna.QnADataBean">
+		update qwqna set re_step=re_step-1 where refe=#{refe} and re_step>#{re_step}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="int">
+		delete from qwqna where no=#{num}
+	</delete>
+</mapper>
 
-</mapper> 
+
+
+
+
+
+
+
+
+
+
+    

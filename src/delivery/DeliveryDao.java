@@ -8,6 +8,6 @@ public interface DeliveryDao {
 	public int loginCheck(String email, String passwd);
 	public int getId(String email);
 	public List<DeliveryDataBean> getInRangeMember(Map<String, Double> map);
-	public List<DeliveryDataBean> findDelName(String name);
+	public List<DeliveryDataBean> findDelName(String delname);
 }
  
